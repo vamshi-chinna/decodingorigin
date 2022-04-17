@@ -202,7 +202,7 @@ $message=0;
                           </td>
                           <?php
                           if(isset($entries['Type_of_Geographic_Area'])){
-                            if(strcmp($entries['Type_of_Geographic_Area'],"Continent")==0 || strcmp($entries['Type_of_Geographic_Area'],"Region")==0){
+                            if(strcmp($entries['Type_of_Geographic_Area'],"Continent-REMOVED")==0 || strcmp($entries['Type_of_Geographic_Area'],"Region-REMOVED")==0){
                               echo "<td width=\"154\" ! important><a class=\"btn btn-dark btn-block waves-effect waves-light text-white\" ><i class=\"fas fa-lock\"></i> Admin Lock</a></td>";
                               if($results['security']>0){
 
