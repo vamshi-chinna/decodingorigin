@@ -15,16 +15,19 @@ if(isset($_GET['message']))
 
 require 'database_login.php';
 
+
+
 if(!empty($_POST['email']) && !empty($_POST['password'])):
 
-	$records = $conn->prepare('SELECT id,email,password FROM users WHERE email = :email');
+	$records = $conn->prepare('SELECT id,email,password,security FROM users WHERE email = :email');
 	$records->bindParam(':email', $_POST['email']);
 	$records->execute();
 	$results = $records->fetch(PDO::FETCH_ASSOC);
 
 	$message = '';
+	
 
-	if(count($results) > 0 && $_POST['password']==$results['password'] ){
+	if(count($results) > 0 && $_POST['password']==$results['password'] && $results['security']!="R"){
 
 		$_SESSION['user_id'] = $results['id'];
 		$sql =	"INSERT INTO `login_dump` (`Username`, `TimeDate`) VALUES ('".$_POST['email']."', '".$TimeDate."')";
@@ -73,7 +76,14 @@ if(!empty($_POST['email']) && !empty($_POST['password'])):
 		}
 
 	} else {
+	    if($results['security']=="R"){
+	        $message = 'We are facing technical difficulties in accessing the server. Please try again later';
+	       
+	    } else {
+	    
 		$message = 'Incorrect Credentials! Please try again.';
+	    }
+	   
 	}
 
 endif;
