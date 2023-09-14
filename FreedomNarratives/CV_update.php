@@ -96,7 +96,9 @@ $message=0;
 
 
                           <a class="btn btn-secondary float-right" href="CV_tables.php"><i class="fas fa-long-arrow-alt-left"></i> Back</a>
+                          <?php if($results['security']>=0){ ?>
                           <a class="btn btn-warning float-right"href="<?php echo explode("&message", $current_URL)[0];?>&message=5"><i class="fas fa-plus-square"></i> Add New</a>
+                          <?php } ?>
                             <?php if($results['security']>0){ ?>
                           <a class="btn btn-primary float-right"href="utilities/commands_external/CV_reorder.php?table=<?php echo $table;?>"><i class="fas fa-sort-amount-up-alt"></i> Re-order (Alphabetically)</a>
                         <?php } ?>

@@ -4,7 +4,9 @@
   <div class="row">
     <?php if($doctype!="NoSelection"):?>
     <div class="col-xl-3 col-md-3 mb-3">
+    <?php if($results['security']>=0){ ?>
     <button type="submit" class="btn btn-primary">Save <i class="fas fa-save"></i></button>
+    <?php } ?>
     </div>
   <?php endif;?>
 </div>
@@ -555,7 +557,9 @@
     <div class="row">
       <?php if($doctype!="NoSelection"):?>
       <div class="col-xl-3 col-md-3 mb-3">
-      <button type="submit" class="btn btn-primary">Save <i class="fas fa-save"></i></button>
+      <?php if($results['security']>=0){ ?>
+        <button type="submit" class="btn btn-primary">Save <i class="fas fa-save"></i></button>
+      <?php } ?>
       </div>
     <?php endif;?>
 

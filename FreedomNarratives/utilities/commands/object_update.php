@@ -1,9 +1,10 @@
 <?php
 
 //Loading values
-if($_POST['action']=="Update"){
+if(isset($_POST['action']) && $_POST['action']=="Update"){
 $type="object";
 $field="";
+$field_log="";
 foreach ($_POST as $name => $val)
 {
   if($name !="action"){
@@ -23,65 +24,125 @@ foreach ($_POST as $name => $val)
         $CV_flag=1;
         $CV_table_name=$CV_identifer['Options'];
       }
-
-
+      if($CV_identifer['FieldType']=="dropdown" & $CV_identifer['Options']=="Researcher")
+      {
+        $CV_flag=2;
+        $CV_table_name='users';
+      }
     }
 
-     if($name !="objectID" && !empty($val) && $val!=$object_data[$name] & $CV_flag==0){
-     $field=$field.htmlspecialchars($name . ': ' . $val, ENT_QUOTES) . " <br> ";
+      if($name !="objectID" && !empty($val) && $val!=$object_data[$name] & $CV_flag==0){
+        $field=$field.htmlspecialchars($name . ': ' . $val, ENT_QUOTES) . " <br> ";
 
+        if(is_array($_POST[$name])){
+          $column_opt="";
+          $column_opt_id="";
+          foreach($_POST[$name] as $option){
+            $q1="SELECT `ID`,`Name` FROM `".$CV_table_name."` WHERE `ID`=".$option;
+            $query_q1 = $conn->query($q1);
+            $CV_value_data = $query_q1->fetch(PDO::FETCH_ASSOC);
+            $CV_value=$CV_value_data['Name'];
+            $column_opt=$column_opt.$CV_value.";";
+            $column_opt_id=$column_opt_id.$option.";";
+          }
+          if(isset($event_data[$name]) && $event_data[$name]!=$column_opt_id){
+            $field_log=$field_log.htmlspecialchars($Display_name['display'] . ' : ' . $column_opt, ENT_QUOTES) . " <br> ";
+          }
+        } else {
+          $field_log=$field_log.htmlspecialchars($Display_name['display'] . ' : ' . $val, ENT_QUOTES) . " <br> ";
+        }
+      }
 
-     $field_log=$field_log.htmlspecialchars($Display_name['display'] . ' : ' . $val, ENT_QUOTES) . " <br> ";
+      if($CV_flag==1)
+      {
+        $q1="SELECT `ID`,`Name` FROM `".$CV_table_name."` WHERE `ID`=".$val;
+        $query_q1 = $conn->query($q1);
+        $CV_value = $query_q1->fetch(PDO::FETCH_ASSOC);
+        $field=$field.htmlspecialchars($name . ': ' . $CV_value['Name'], ENT_QUOTES) . " <br> ";
 
+        $field_log=$field_log.htmlspecialchars($Display_name['display'] . ' : ' . $CV_value['Name'], ENT_QUOTES) . " <br> ";
+      }
 
-     }
-     if($CV_flag==1)
-     {
-       $q1="SELECT `ID`,`Name` FROM `".$CV_table_name."` WHERE `ID`=".$val;
-       $query_q1 = $conn->query($q1);
-       $CV_value = $query_q1->fetch(PDO::FETCH_ASSOC);
-       $field=$field.htmlspecialchars($name . ': ' . $CV_value['Name'], ENT_QUOTES) . " <br> ";
+      if($CV_flag==2)
+      {
+        if(is_array($val)){
+          $val_values = implode(";",$val);
+          $field=$field.htmlspecialchars($name . ': ' . $val_values, ENT_QUOTES) . " <br> ";
+        } else {
+          $field=$field.htmlspecialchars($name . ': ' . $val, ENT_QUOTES) . " <br> ";
+        }
+        if(is_array($_POST[$name])){
+          $column_opt="";
+          $column_opt_id="";
+          foreach($_POST[$name] as $option){
+            $column_opt=$column_opt.$option.";";
+            $column_opt_id=$column_opt_id.$option.";";
+          }
+          if(isset($event_data[$name]) && $event_data[$name]!=$column_opt_id){
+            $field_log=$field_log.htmlspecialchars($Display_name['display'] . ' : ' . $column_opt, ENT_QUOTES) . " <br> ";
+          }
+        } else {
+          $field_log=$field_log.htmlspecialchars($Display_name['display'] . ' : ' . $val, ENT_QUOTES) . " <br> ";
+        }
+      }
 
+      if($name=="FullSource"){
+        $q2="SELECT * FROM `object` WHERE `objectID`=".$val;
+        $query_q2 = $conn->query($q2);
+        $Object_data_attach = $query_q2->fetch(PDO::FETCH_ASSOC);
 
-       $field_log=$field_log.htmlspecialchars($Display_name['display'] . ' : ' . $CV_value['Name'], ENT_QUOTES) . " <br> ";
-
-     }
-     if($name =="FullSource"){
-       $q2="SELECT * FROM `object` WHERE `objectID`=".$val;
-       $query_q2 = $conn->query($q2);
-       $Object_data_attach = $query_q2->fetch(PDO::FETCH_ASSOC);
-
-       $field_log=$field_log." - Attached ObjectUI :".$Object_data_attach['UI']."<br> - Attached Source Title: ".$Object_data_attach['Field1']." <br> ";
-     }
-
-
-}
+        $field_log=$field_log." - Attached ObjectUI :".$Object_data_attach['UI']."<br> - Attached Source Title: ".$Object_data_attach['Field1']." <br> ";
+      }
+  }
 }
 if($field!=""){
 
   foreach ($_POST as $name => $val){
+    if($name!="action"){
+      if($_POST[$name]!="on" || $_POST[$name]=="0" ){
+        $column = htmlspecialchars($val, ENT_QUOTES);
 
-if($_POST[$name]!="on" || $_POST[$name]=="0" ){
-$column = htmlspecialchars($val, ENT_QUOTES);
+        $q1_fieldtype="SELECT `FieldType`,`Options` FROM `".$object_data['doctype']."` WHERE `ColumnName`LIKE '".$name."'";
 
-//Update entry
-	$sql = "UPDATE `object` SET `".$name."`=\"".$column."\" WHERE `objectID` = \"".$objectID."\"";
-	$stmt = $conn->prepare($sql);
+        $query_fieldtype = $conn->query($q1_fieldtype);
+        $fieldtype_data = $query_fieldtype->fetch(PDO::FETCH_ASSOC);
+        $fieldtype=$fieldtype_data['FieldType'];
+        $researcher_flag = $fieldtype_data['Options'];
 
-	if( $stmt->execute() ):
-		$message = 1;
+        if($fieldtype=="dropdown-CV-multi" || ($fieldtype=="dropdown" & $researcher_flag=="Researcher")){
+          $column="";
+          foreach($_POST[$name] as $option){
+           $column=$column.$option.";";
+          }
+  
+          //Update entry
+          $sql = "UPDATE `object` SET `".$name."`=\"".$column."\" WHERE `objectID` = \"".$objectID."\"";
+          $stmt = $conn->prepare($sql);
+  
+          if( $stmt->execute() ):
+            $message = 1;
+  
+          else:
+            $message = 2;
+          endif;
+        } else {
+          //Update entry
+          $sql = "UPDATE `object` SET `".$name."`=\"".$column."\" WHERE `objectID` = \"".$objectID."\"";
+          $stmt = $conn->prepare($sql);
+    
+          if( $stmt->execute() ):
+            $message = 1;
+    
+          else:
+            $message = 2;
+          endif;
+        }
+      }
+    }
+  }
 
-	else:
-		$message = 2;
-	endif;
-
-
-
-}
-}
-
-//Update Log
-$action="Updated";
+    //Update Log
+    $action="Updated";
     $sql = "INSERT INTO `log` (`ID`,`type`,`TimeDate`,`RA`,`field`,`action`) VALUES ('".$objectID."','".$type."','".$TimeDate."','".$RA."','".$field_log."','".$action."')";
     $stmt = $conn->prepare($sql);
     if( $stmt->execute() ):
@@ -90,10 +151,8 @@ $action="Updated";
   	else:
   		$message = 2;
   	endif;
-}
-
-else{
-  $message=2;
-}
+  } else {
+    $message=2;
+  }
 }
  ?>

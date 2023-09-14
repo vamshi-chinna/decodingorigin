@@ -33,7 +33,10 @@ $query3 = $conn->query($q3);
         Name: <?php echo $details['Name'];?><br>
         FN ID: <?php echo $details['UI'];?><br>
         <h5><a class="text-white" href="person_edit.php?personID=<?php echo $details['personID'];?>"><i class="fas fa-external-link-alt"></i></a>
-        <a class="text-white" href="utilities/commands_external/person_kinship_delete.php?ID=<?php echo $list['ID'];?>"><i class="fas fa-times"></i></a></h5>
+        <?php if($results['security']>=0){ ?>
+        <a class="text-white" href="utilities/commands_external/person_kinship_delete.php?ID=<?php echo $list['ID'];?>"><i class="fas fa-times"></i></a>
+        <?php } ?>
+        </h5>
       </div>
       <?php }
       }
@@ -43,7 +46,9 @@ $query3 = $conn->query($q3);
         if($list['Flag']==0){?>
           <div class="text-white-50 small">
             <?php echo $list['personID'];?><br></div>
+            <?php if($results['security']>=0){ ?>
             <h5><a class="text-white" href="utilities/commands_external/person_kniship_delete.php?ID=<?php echo $list['ID'];?>"><i class="fas fa-times"></i></a></h5>
+            <?php } ?>
 
         <?php }
         if($list['Flag']==1){
@@ -57,7 +62,10 @@ $query3 = $conn->query($q3);
             Name: <?php echo $details['Name'];?><br>
             FN ID: <?php echo $details['UI'];?><br><br>
               <h5><a class="text-white" href="person_edit.php?personID=<?php echo $details['personID'];?>"><i class="fas fa-external-link-alt"></i></a>
-                  <a class="text-white" href="utilities/commands_external/person_kinship_delete.php?ID=<?php echo $list['ID'];?>"><i class="fas fa-times"></i></a></h5>
+              <?php if($results['security']>=0){ ?>
+                  <a class="text-white" href="utilities/commands_external/person_kinship_delete.php?ID=<?php echo $list['ID'];?>"><i class="fas fa-times"></i></a>
+              <?php } ?>
+                </h5>
             </div>
         <?php }
       }

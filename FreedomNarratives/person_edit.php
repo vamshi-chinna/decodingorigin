@@ -252,8 +252,9 @@ require 'utilities/commands/person_update.php';
                         </select>
                       </div>
                         <div class="col-xl-2 col-md-2 mb-2">
-
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-sync"></i></button>
+                        <?php if($results['security']>=0){ ?>
+                          <button type="submit" class="btn btn-primary"><i class="fas fa-sync"></i></button>
+                        <?php } ?>
                       </form>
                     </div>
 

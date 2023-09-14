@@ -90,7 +90,10 @@ $("#Messgae").click();
 
                   </div>
                   <div class="modal-footer">
-                    <button class="btn btn-primary" type="submit" >Add Entry</button>
+                    <?php if($results['security']>=0){ ?>
+                      <button class="btn btn-primary" type="submit" >Add Entry</button>
+                    <?php } ?>
+                    
                     </form>
 
                   </div>
@@ -131,7 +134,9 @@ $("#Messgae").click();
                   <input type="text" class="form-control" id="Name" placeholder="Type Name" name="Name">
                 </div>
                 <div class="modal-footer">
+                  <?php if($results['security']>=0){ ?>
                   <button class="btn btn-primary" type="submit" >Add Entry</button>
+                  <?php } ?>
                   </form>
 
                 </div>
@@ -184,7 +189,9 @@ $("#Messgae").click();
 
                     </div>
                     <div class="modal-footer">
-                      <button class="btn btn-primary" type="submit" >Add Entry</button>
+                      <?php if($results['security']>=0){ ?>
+                        <button class="btn btn-primary" type="submit" >Add Entry</button>
+                        <?php } ?>
                       </form>
 
                     </div>

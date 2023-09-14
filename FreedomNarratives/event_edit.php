@@ -191,16 +191,16 @@ require 'utilities/commands/event_update.php';
                         </select>
                       </div>
                         <div class="col-xl-2 col-md-2 mb-2">
-
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-sync"></i></button>
+                        <?php if($results['security']>=0){ ?>
+                          <button type="submit" class="btn btn-primary"><i class="fas fa-sync"></i></button>
+                        <?php } ?>
                       </form>
                     </div>
 
                     <div class="col-xl-12 col-md-10 mb-10" style="margin-top: 2%;">
                       <div class="row">
                       <div class="col-xl-12 col-md-10 mb-10">
-
-                        <a href="<?php echo explode("&message", $current_URL)[0];?>&message=4"><button style="width: 100% !important;" class="btn btn-primary pull-right"><i class="fas fa-plus"></i> Relationships</button></a>
+                      <a href="<?php echo explode("&message", $current_URL)[0];?>&message=4"><button style="width: 100% !important;" class="btn btn-primary pull-right"><i class="fas fa-plus"></i> Relationships</button></a>
                       </div>
 
                       <div class="col-xl-12 col-md-10 mb-10">

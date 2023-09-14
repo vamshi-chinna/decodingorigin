@@ -176,11 +176,11 @@ $k=0;$total_col=0;
 
                        if($user['email']==$person_data['assignedto']){
                          # Continue; ##Restricting Self-assignment
-                         echo "<option value=\"".$user['email']."\">".$user[fname]." ".$user['lname']."</option>";
+                         echo "<option value=\"".$user['email']."\">".$user['fname']." ".$user['lname']."</option>";
 
                      }
                      else {
-                       echo "<option value=\"".$user['email']."\">".$user[fname]." ".$user['lname']."</option>";
+                       echo "<option value=\"".$user['email']."\">".$user['fname']." ".$user['lname']."</option>";
                      }
 
                    }?>
@@ -198,7 +198,9 @@ $k=0;$total_col=0;
               <br>
               <div class="row">
               <div class="col-xl-4 col-md-6 mb-12 pull-right">
-              <button type="submit" class="btn btn-success">Assign <i class="fas fa-check"></i></button>
+              <?php if($results['security']>=0){ ?>
+                <button type="submit" class="btn btn-success">Assign <i class="fas fa-check"></i></button>
+              <?php } ?>
               </div>
               </form>
               <div class="col-xl-5 col-md-6 mb-12 pull-right">
