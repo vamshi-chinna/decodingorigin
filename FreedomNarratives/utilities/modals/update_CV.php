@@ -421,13 +421,13 @@ require 'utilities/pages/autofill_geoplace.php';
 
        </div>
       <div class="modal-footer">
+      <?php if($results['security']>=0){ ?>
         <?php if($results['security']>0){ ?>
           <button class="btn btn-success" type="submit" >Save</button>
         <?php }else{ ?>
           <button class="btn btn-warning" type="submit" >Submit for Approval</button>
-
         <?php } ?>
-
+      <?php } ?>
           </form>
 
 

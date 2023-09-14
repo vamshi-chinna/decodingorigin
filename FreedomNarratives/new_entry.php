@@ -104,7 +104,9 @@ require 'utilities/database_SS.php';
                           ?>
                         </select>
                       </div>
+                      <?php if($results['security']>=0){ ?>
                       <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-user-plus"></i> Create New Person</button>
+                      <?php } ?>
                     </form>
                   </div>
                 </div>

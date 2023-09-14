@@ -104,7 +104,9 @@ require 'utilities/commands/person_update.php';
                         </div>
                       </div>
                       <div class="text-white-50 small" style="margin-bottom: 1%;">
-                      <a href="<?php echo explode("&message", $current_URL)[0];?>&message=3"><button class="btn btn-success pull-right"><i class="fas fa-plus"> Add Source</i></button></a>
+                      <?php if($results['security']>=0){ ?>
+                        <a href="<?php echo explode("&message", $current_URL)[0];?>&message=3"><button class="btn btn-success pull-right"><i class="fas fa-plus"> Add Source</i></button></a>
+                      <?php } ?>
                     </div>
 
 

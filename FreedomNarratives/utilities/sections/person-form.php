@@ -2,7 +2,9 @@
   <input type="hidden" name="action" value="Update">
   <?php if($doctype!="NoSelection"):?>
   <div class="col-xl-3 col-md-3 mb-3">
-  <button type="submit" class="btn btn-primary">Save <i class="fas fa-save"></i></button>
+  <?php if($results['security']>=0){ ?>
+    <button type="submit" class="btn btn-primary">Save <i class="fas fa-save"></i></button>
+  <?php } ?>
   </div>
 <?php endif;?>
 
@@ -399,27 +401,37 @@
           $q_user="SELECT * FROM `users` WHERE `".$person_data['project']."`=1";
           $query_user = $conn->query($q_user);
 
+          //Loading Value for Key in Events Table
+          $selectedoptions=$person_data[$columns['ColumnName']];
+          $selectedoptions_Array = explode(';', $selectedoptions);
 
           ?>
 
-           <select class="form-control" name="<?php echo $columns['ColumnName'];?>" <?php if($columns['status']==0){echo "Disabled";}?>>
+            <div class="" style="height:120px;overflow:auto;width:100%;border:1px;">
+              <div class="form-control">
+                <?php 
+                  $notknown_flag = "";
+                  foreach($selectedoptions_Array as $opt_selected){
+                    if($opt_selected=='0'){
+                      $notknown_flag="checked";
+                    }
+                  }
+                  echo "<input type=\"checkbox\" name=\"".$columns['ColumnName']."[]\" ".$notknown_flag." value=\"0\"> Not Known</option>";
+                ?>
+              </div>
+              <?php while($user = $query_user->fetch(PDO::FETCH_ASSOC)){
+                $disable_flag="";
+                foreach($selectedoptions_Array as $opt_selected){
+                  if($opt_selected==$user['email']){
+                    $disable_flag="checked";
 
-             <option value="0">Not Known</option>
-             <?php while($user= $query_user->fetch(PDO::FETCH_ASSOC)){
-
-
-                 if($user['email']==$person_data[$columns['ColumnName']]){
-                 echo "<option value=\"\" selected disabled hidden>".$user['fname']." ".$user['lname']."</option>";
-                 echo "<option value=\"".$user['email']."\">".$user['fname']." ".$user['lname']."</option>";
-               }
-               else {
-                 echo "<option value=\"".$user['email']."\">".$user['fname']." ".$user['lname']."</option>";
-               }
-
-             }?>
-
-           </select>
-
+                  }
+                }
+                echo "<div class=\"form-control\">";
+                echo "<input type=\"checkbox\" name=\"".$columns['ColumnName']."[]\" ".$disable_flag." value=\"".$user['email']."\"> ".$user['fname']." ".$user['lname']."</option>";
+                echo "</div>";
+              } ?>
+            </div>
         </div>
       <?php
       require 'utilities/database_SS.php';
@@ -499,7 +511,9 @@
     <div class="row">
       <?php if($doctype!="NoSelection"):?>
       <div class="col-xl-3 col-md-3 mb-3">
-      <button type="submit" class="btn btn-primary">Save <i class="fas fa-save"></i></button>
+      <?php if($results['security']>=0){ ?>
+        <button type="submit" class="btn btn-primary">Save <i class="fas fa-save"></i></button>
+      <?php } ?>
       </div>
     <?php endif;?>
         </form>

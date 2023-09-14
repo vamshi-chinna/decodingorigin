@@ -237,6 +237,7 @@ require 'utilities/database_SS.php';
                   $doctype=$datas['doctype'];
                 }
                 echo "<td width=\"154\" ! important><a href=\"person_edit.php?&personID=".$datas['personID']."\" class=\"btn btn-success btn-block waves-effect waves-light\">Update</a></td>";
+                
                 echo "<td width=\"154\" ! important><a  href=\"?personID=".$datas['personID']."\" class=\"btn btn-info btn-block waves-effect waves-light\" data-toggle=\"modal\" data-target=\"#forward_msg".$datas['personID']."\">Message</a></td>";
                 ?>
                 <!-- Forward Meesage View Modal-->
@@ -256,8 +257,10 @@ require 'utilities/database_SS.php';
                       </div>
                       <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-success" href="person_edit.php?personID=<?php echo $datas['personID'];?>">Update Entry <i class="fas fa-pen"></i></a>
-                        <a class="btn btn-info" href="forward.php?personID=<?php echo $datas['personID'];?>">Reply <i class="fas fa-share"></i></a>
+                        <?php if($results['security']>=0){ ?>
+                          <a class="btn btn-success" href="person_edit.php?personID=<?php echo $datas['personID'];?>">Update Entry <i class="fas fa-pen"></i></a>
+                          <a class="btn btn-info" href="forward.php?personID=<?php echo $datas['personID'];?>">Reply <i class="fas fa-share"></i></a>
+                        <?php } ?>
                       </div>
                     </div>
                   </div>

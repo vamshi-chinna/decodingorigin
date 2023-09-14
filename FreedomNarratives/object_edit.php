@@ -196,8 +196,9 @@ require 'utilities/commands/object_update.php';
                         </select>
                       </div>
                         <div class="col-xl-2 col-md-2 mb-2">
-
+                        <?php if($results['security']>=0){ ?>
                             <button type="submit" class="btn btn-primary"><i class="fas fa-sync"></i></button>
+                        <?php } ?>
                           </form>
                         </div>
 
@@ -217,7 +218,9 @@ require 'utilities/commands/object_update.php';
                          <input name="image" type="file" class="form-control-file" id="exampleFormControlFile1">
                       </div>
                       <div class="col-xl-2 col-md-2 mb-2">
-                        <button type="submit" class="btn btn-primary float-right"><i class="fas fa-upload"></i></button>
+                        <?php if($results['security']>=0){ ?>
+                          <button type="submit" class="btn btn-primary float-right"><i class="fas fa-upload"></i></button>
+                        <?php } ?>
                           </form>
                       </div>
 

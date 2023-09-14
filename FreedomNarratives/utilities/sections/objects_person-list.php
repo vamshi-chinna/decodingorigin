@@ -9,10 +9,10 @@
           <th>File Title</th>
           <th>File Uploaded</th>
           <th></th>
-
-
-          <th> </th>
-          <th> </th>
+          <?php if($results['security']>=0){ ?>
+            <th> </th>
+            <th> </th>
+          <?php } ?>
 
       </tr>
     </thead>
@@ -51,13 +51,13 @@ echo "<td width=\"200\" ! important><i class=\"fas fa-times\"></i></td>";
 
 echo "<td width=\"154\" ! important><a href=\"object_edit.php?personID=".$_GET['personID']."&objectID=".$object_data['objectID']."\" class=\"btn btn-success btn-block waves-effect waves-light\">Update</a></td>";
 
-echo "<td width=\"154\" ! important><a href=\"utilities/commands_external/remove_object.php?objectID=".$object_data['objectID']."&personID=".$_GET['personID']."\" class=\"btn btn-danger btn-block waves-effect waves-light\">Remove</a></td>";
-if($object_data['Adminupload']==0){
-echo "<td width=\"154\" ! important><a href=\"utilities/commands_external/delete_object.php?objectID=".$object_data['objectID']."&personID=".$_GET['personID']."\" class=\"btn btn-secondary btn-block waves-effect waves-light\">Delete</a></td>";
-}
-else{
-echo "<td width=\"154\" ! important>Admin Upload</td>";
-
+if($results['security']>=0){ 
+  echo "<td width=\"154\" ! important><a href=\"utilities/commands_external/remove_object.php?objectID=".$object_data['objectID']."&personID=".$_GET['personID']."\" class=\"btn btn-danger btn-block waves-effect waves-light\">Remove</a></td>";
+  if($object_data['Adminupload']==0){
+  echo "<td width=\"154\" ! important><a href=\"utilities/commands_external/delete_object.php?objectID=".$object_data['objectID']."&personID=".$_GET['personID']."\" class=\"btn btn-secondary btn-block waves-effect waves-light\">Delete</a></td>";
+  } else {
+    echo "<td width=\"154\" ! important>Admin Upload</td>";
+  }
 }
 
 

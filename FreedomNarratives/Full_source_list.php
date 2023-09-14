@@ -110,7 +110,7 @@ require 'utilities/database_SS.php';
 
 
 
-                          <th> </th>
+                          <?php if($results['security']>=0){ ?><th> </th><?php } ?>
 
                       </tr>
                     </thead>
@@ -142,7 +142,9 @@ require 'utilities/database_SS.php';
                   $doctype=$datas['doctype'];
                 }
                 echo "<td width=\"154\" ! important><a href=\"Full_object_edit.php?collectionName=".$_GET['collectionName']."&objectID=".$datas['objectID']."\" class=\"btn btn-success btn-block waves-effect waves-light\">Update</a></td>";
-                echo "<td width=\"154\" ! important><a href=\"utilities/commands_external/delete_object.php?objectID=".$datas['objectID']."\" class=\"btn btn-secondary btn-block waves-effect waves-light\">Delete</a></td>";
+                if($results['security']>=0){
+                  echo "<td width=\"154\" ! important><a href=\"utilities/commands_external/delete_object.php?objectID=".$datas['objectID']."\" class=\"btn btn-secondary btn-block waves-effect waves-light\">Delete</a></td>";
+                }
 
 
                 echo "</tr>";
