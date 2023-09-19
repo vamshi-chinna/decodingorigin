@@ -35,7 +35,7 @@
         <?php
 
         if($results['security']>0 & $person_data['project']=='FN' & (int)$person_data['Complete']>50){ ?>
-        <a target="_blank" href="https://dev2.freedomnarratives.org/recordview.php?ID=<?php echo $person_data['UI']?>" style="width: 160px !important; background-color: #FF5733 ;border-color: #FF5733 ;"  class="btn btn-sm text-white shadow-sm"><i class="fas fa-eye"></i> Preview</a><br><br>
+        <a target="_blank" href="https://dev2.freedomnarratives.org/Digital-Identities/recordview.php?ID=<?php echo $person_data['UI']?>" style="width: 160px !important; background-color: #FF5733 ;border-color: #FF5733 ;"  class="btn btn-sm text-white shadow-sm"><i class="fas fa-eye"></i> Preview</a><br><br>
           <?php } ?>
           <a style="width: 160px !important;"  class="btn btn-sm btn-secondary shadow-sm" href="forward.php?personID=<?php echo $person_data['personID'];?>"></i> <i class="fas fa-share"></i> Forward Task</a><br><br>
           <a style="width: 160px !important;"  class="btn btn-sm btn-secondary shadow-sm" href="log_person.php?personID=<?php echo $person_data['personID'];?>"></i> <i class="fas fa-file"></i> Person Log</a><br><br>
