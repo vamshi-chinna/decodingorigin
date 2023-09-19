@@ -108,7 +108,7 @@ for(let i=0;i<field_name.length;i++){
                                        'newwindow',
                                  'width=500,height=500');
                            return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
-              <?php if($object_data[$columns['ColumnName']]=="0" || empty($object_data[$columns['ColumnName']])){$text="Placeholder=\"Type here\"";}else{$text="value=\"".$object_data[$columns['ColumnName']]."\"";}?>
+              <?php if($object_data[$columns['ColumnName']]=="0" || empty($object_data[$columns['ColumnName']])){$text="placeholder=\"Type here\"";}else{$text="value=\"".$object_data[$columns['ColumnName']]."\"";}?>
               <input type="text" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>"  <?php echo $text;?> <?php if($columns['status']==0){echo "Disabled";}?>>
 
             </div>

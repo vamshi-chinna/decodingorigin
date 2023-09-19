@@ -53,7 +53,7 @@
                                       'newwindow',
                                 'width=500,height=500');
                           return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
-             <?php if($event_data[$columns['ColumnName']]=="0"){$text="Placeholder=\"Type here\"";}else{$text="value=\"".$event_data[$columns['ColumnName']]."\"";}?>
+             <?php if($event_data[$columns['ColumnName']]=="0"){$text="placeholder=\"Type here\"";}else{$text="value=\"".$event_data[$columns['ColumnName']]."\"";}?>
              <input type="text" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>"  <?php echo $text;?> <?php if($columns['status']==0){echo "Disabled";}?>>
 
            </div>
@@ -93,7 +93,7 @@
                                      'newwindow',
                                'width=500,height=500');
                          return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
-            <?php if($event_data[$columns['ColumnName']]=="0"){$text="Type here";}else{$text=$event_data[$columns['ColumnName']];}?>
+            <?php if($event_data[$columns['ColumnName']]=="0"){$text="placeholder=\"Type here\"";}else{$text=$event_data[$columns['ColumnName']];}?>
             <textarea rows="8" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>"  value="" <?php if($columns['status']==0){echo "Disabled";}?>><?php echo $text;?></textarea>
 
             </div>
