@@ -45,7 +45,7 @@
                                       'newwindow',
                                 'width=500,height=500');
                           return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
-             <?php if($person_data[$columns['ColumnName']]=="0"){$text="Placeholder=\"Type here\"";}else{$text="value=\"".$person_data[$columns['ColumnName']]."\"";}?>
+             <?php if($person_data[$columns['ColumnName']]=="0"){$text="placeholder=\"Type here\"";}else{$text="value=\"".$person_data[$columns['ColumnName']]."\"";}?>
              <input type="text" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>"  <?php echo $text;?> <?php if($columns['status']==0){echo "Disabled";}?>>
 
            </div>
@@ -69,7 +69,7 @@
                               'newwindow',
                               'width=500,height=500');
                               return false;" target="_blank"><i class="fas fa-list-alt"></i></a>
-                 <?php if($person_data[$columns['ColumnName']]=="0"){$text="Placeholder=\"Type here\"";}else{$text="value=\"".$person_data[$columns['ColumnName']]."\"";}?>
+                 <?php if($person_data[$columns['ColumnName']]=="0"){$text="placeholder=\"Type here\"";}else{$text="value=\"".$person_data[$columns['ColumnName']]."\"";}?>
                  <input type="text" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>"  <?php echo $text;?> <?php if($columns['status']==0){echo "Disabled";}?>>
 
                </div>
@@ -88,8 +88,8 @@
                                      'newwindow',
                                'width=500,height=500');
                          return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
-            <?php if($person_data[$columns['ColumnName']]=="0" || empty($person_data[$columns['ColumnName']])){$text="Type here";}else{$text=$person_data[$columns['ColumnName']];}?>
-            <input type="date" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>"  value="<?php echo $text;?>" <?php if($columns['status']==0){echo "Disabled";}?>>
+            <?php if($person_data[$columns['ColumnName']]=="0" || empty($person_data[$columns['ColumnName']])){$text="placeholder=\"Type here\"";}else{$text="value=\"".$person_data[$columns['ColumnName']]."\"";}?>
+            <input type="date" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>" <?php echo $text;?> <?php if($columns['status']==0){echo "Disabled";}?>>
 
             </div>
             <?php
@@ -109,14 +109,9 @@
                                      'newwindow',
                                'width=500,height=500');
                          return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
-            <?php if($person_data[$columns['ColumnName']]=="0" || empty($person_data[$columns['ColumnName']])){?>
 
-            <textarea rows="8" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>" placeholder="Type here" <?php if($columns['status']==0){echo "Disabled";}?>></textarea>
-          <?php } else{
-            $text=$person_data[$columns['ColumnName']];?>
-            <textarea rows="8" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>" <?php if($columns['status']==0){echo "Disabled";}?>><?php echo $text;?></textarea>
-
-          <?php } ?>
+            <?php if($person_data[$columns['ColumnName']]=="0" || empty($person_data[$columns['ColumnName']])){$text="0";}else{$text=$person_data[$columns['ColumnName']];}?>
+            <textarea rows="8" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>" placeholder="Type Here" <?php if($columns['status']==0){echo "Disabled";}?>><?php echo $text !='0' ? $text : '';?></textarea>
 
 
             </div>
