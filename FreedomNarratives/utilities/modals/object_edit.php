@@ -48,8 +48,8 @@ $("#Messgae").click();
                     ?>
                    <div class="form-group">
                      <label for="exampleInputEmail1"><?php echo $columns['display'];?></label>
-                     <?php if($object_data[$columns['ColumnName']]=="NA"){$text="placeholder=\"Type here\"";}else{$text=$object_data[$columns['ColumnName']];}?>
-                     <input type="text" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>"  placeholder="<?php echo $text;?>" <?php if($columns['status']==0){echo "Disabled";}?>>
+                     <?php if($object_data[$columns['ColumnName']]=="NA"){$text="placeholder=\"Type here\"";}else{$text="value=\"".$object_data[$columns['ColumnName']]."\"";}?>
+                     <input type="text" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>" <?php echo $text;?> <?php if($columns['status']==0){echo "Disabled";}?>>
 
                    </div>
                 <?php
@@ -58,8 +58,8 @@ $("#Messgae").click();
                    ?>
                   <div class="form-group">
                     <label for="exampleInputEmail1"><?php echo $columns['display'];?></label>
-                    <?php if($object_data[$columns['ColumnName']]=="NA"){$text="placeholder=\"Type here\"";}else{$text=$object_data[$columns['ColumnName']];}?>
-                    <input type="date" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>"  value="<?php echo $text;?>" <?php if($columns['status']==0){echo "Disabled";}?>>
+                    <?php if($object_data[$columns['ColumnName']]=="NA"){$text="placeholder=\"Type here\"";}else{$text="value=\"".$object_data[$columns['ColumnName']]."\"";}?>
+                    <input type="date" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>" <?php echo $text;?> <?php if($columns['status']==0){echo "Disabled";}?>>
 
                   </div>
                 <?php
@@ -68,8 +68,8 @@ $("#Messgae").click();
                    ?>
                   <div class="form-group">
                     <label for="exampleInputEmail1"><?php echo $columns['display'];?></label>
-                    <?php if($object_data[$columns['ColumnName']]=="NA"){$text="placeholder=\"Type here\"";}else{$text=$object_data[$columns['ColumnName']];}?>
-                    <textarea rows="8" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>"  placeholder="" <?php if($columns['status']==0){echo "Disabled";}?>><?php echo $text;?></textarea>
+                    <?php if($object_data[$columns['ColumnName']]=="NA"){$text="0";}else{$text=$object_data[$columns['ColumnName']];}?>
+                    <textarea rows="8" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>" placeholder="Type Here" <?php if($columns['status']==0){echo "Disabled";}?>><?php echo $text !='0' ? $text : '';?></textarea>
 
                   </div>
                 <?php

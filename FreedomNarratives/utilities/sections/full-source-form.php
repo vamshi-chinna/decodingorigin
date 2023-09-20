@@ -84,14 +84,9 @@
                                       'newwindow',
                                 'width=500,height=500');
                           return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
-             <?php if($object_data[$columns['ColumnName']]=="0"){?>
 
-             <textarea rows="8" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>" placeholder="Type here" <?php if($columns['status']==0){echo "Disabled";}?>></textarea>
-           <?php } else{
-             $text=$object_data[$columns['ColumnName']];?>
-             <textarea rows="8" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>" <?php if($columns['status']==0){echo "Disabled";}?>><?php echo $text;?></textarea>
-
-           <?php } ?>
+            <?php if($object_data[$columns['ColumnName']]=="0"){$text="0";}else{$text=$object_data[$columns['ColumnName']];}?>
+            <textarea rows="8" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>" placeholder="Type Here" <?php if($columns['status']==0){echo "Disabled";}?>><?php echo $text !='0' ? $text : '';?></textarea>
 
 
              </div>
