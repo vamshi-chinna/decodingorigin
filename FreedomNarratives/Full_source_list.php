@@ -117,7 +117,7 @@ require 'utilities/database_SS.php';
 
                     <tbody >
                 <?php
-                $q1="SELECT * FROM `object` WHERE  `Adminupload` >1 AND `collectionName` LIKE '".$collectionName."' ".$search;
+                $q1="SELECT * FROM `object` WHERE  `Adminupload` >1 AND `collectionName` LIKE '".$collectionName."' ".$search." ORDER BY `Field1`";
 
                 $query = $conn->query($q1);
 
