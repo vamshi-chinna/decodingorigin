@@ -154,7 +154,13 @@ endif;
               <input class="form-control" type="text" placeholder="Enter username" name="email" required ><br>
               <label for="exampleInputEmail1">Password</label>
               <input class="form-control" type="password" placeholder="Enter password" name="password" required ><br>
-              <span style="background-color:red;"><?php echo $message."<br><br>";?></span>
+              <span style="background-color:red;"><?php
+                  if(isset($message) && $message != ""){
+                    echo $message."<br><br>";
+                  } else {
+                    echo "<br>";
+                  }?>
+              </span>
 
               <input class="btn btn-primary" type="submit" ><br>
         <form>

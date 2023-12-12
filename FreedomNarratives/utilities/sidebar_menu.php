@@ -65,7 +65,7 @@ $query_projectselect = $conn->query($q_projectselect);
 while ($projectselect= $query_projectselect->fetch(PDO::FETCH_ASSOC)){
 
 
-if($results[$projectselect['ProjectID']]==1){
+if(isset($results[$projectselect['ProjectID']]) && $results[$projectselect['ProjectID']]==1){
 ?>
   <!-- Nav Item - Dashboard -->
 

@@ -222,7 +222,7 @@ require 'utilities/commands/person_update.php';
                       <form action="utilities/commands/person-doctype_update.php" method="POST">
                         <input name="personID" value=<?php echo $_GET['personID']; ?> type=hidden>
                         <input name="action" value="doc" type=hidden>
-                        <input name="page_m" value="<?php echo $_GET['page_m'];?>" type=hidden>
+                        <input name="page_m" value="<?php echo isset($_GET['page_m']) ? $_GET['page_m'] : 1;?>" type=hidden>
 
                         <select class="form-control" name="doctype">
                           <?php

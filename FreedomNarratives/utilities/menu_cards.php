@@ -24,7 +24,7 @@
   while ($Project = $query3_project->fetch(PDO::FETCH_ASSOC))
   {
 
-    if($results[$Project['ProjectID']]==1){
+    if(isset($results[$Project['ProjectID']]) && $results[$Project['ProjectID']]==1){
       require 'utilities/database_SS.php';
       $q3="SELECT count(personID) as counts FROM `person` WHERE `project` LIKE '".$Project['ProjectID']."'";
       $query3 = $conn->query($q3);

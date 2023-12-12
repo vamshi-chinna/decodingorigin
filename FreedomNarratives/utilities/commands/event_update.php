@@ -1,9 +1,11 @@
 <?php
 
 //Loading values
-if($_POST['action']=="Update"){
+if(isset($_POST['action']) && $_POST['action']=="Update"){
 $type="event";
 $field="";
+$field_log="";
+
 foreach ($_POST as $name => $val)
 {
   if($name !="action"){
@@ -35,7 +37,12 @@ foreach ($_POST as $name => $val)
           }
 
      if($name !="eventID" && $name!="Sources" && !empty($val) && $val!=$event_data[$name] && $CV_flag==0){
-     $field=$field.htmlspecialchars($name . ': ' . $val) . " <br> ";
+      if(is_array($val)){
+        $val_string = implode(";",$val);
+        $field=$field.htmlspecialchars($name . ': ' . $val_string) . " <br> ";
+      } else {
+        $field=$field.htmlspecialchars($name . ': ' . $val) . " <br> ";
+      }
 
      if(is_array($_POST[$name])){
        $column_opt="";
@@ -104,45 +111,51 @@ if($field!=""){
 
   foreach ($_POST as $name => $val){
 
-if($_POST[$name]!="on" || $_POST[$name]=="0" ){
-$column = htmlspecialchars($val, ENT_QUOTES);
-
-
-$q1_fieldtype="SELECT `FieldType` FROM `".$event_data['doctype']."` WHERE `ColumnName`LIKE '".$name."'";
-$query_fieldtype = $conn->query($q1_fieldtype);
-$fieldtype_data = $query_fieldtype->fetch(PDO::FETCH_ASSOC);
-$fieldtype=$fieldtype_data['FieldType'];
-if($fieldtype=="dropdown-CV-multi"){
-  $column="";
-  foreach($_POST[$name] as $option){
-    $column=$column.$option.";";
+    if($_POST[$name]!="on" || $_POST[$name]=="0" ){
+      if(is_array($val)){
+        $val_string = implode(";",$val);
+        $column = htmlspecialchars($val_string, ENT_QUOTES);
+      } else {
+        $column = htmlspecialchars($val, ENT_QUOTES);
+      }
+    
+    $q1_fieldtype="SELECT `FieldType` FROM `".$event_data['doctype']."` WHERE `ColumnName`LIKE '".$name."'";
+    $query_fieldtype = $conn->query($q1_fieldtype);
+    $fieldtype_data = $query_fieldtype->fetch(PDO::FETCH_ASSOC);
+    if($fieldtype_data){
+      $fieldtype=$fieldtype_data['FieldType'];
+      if($fieldtype=="dropdown-CV-multi"){
+        $column="";
+        foreach($_POST[$name] as $option){
+          $column=$column.$option.";";
+        }
+      
+        //Update entry
+          $sql = "UPDATE `event` SET `".$name."`=\"".$column."\" WHERE `eventID` = \"".$eventID."\"";
+          $stmt = $conn->prepare($sql);
+      
+          if( $stmt->execute() ):
+            $message = 1;
+      
+          else:
+            $message = 2;
+          endif;
+      
+      }else{
+        //Update entry
+          $sql = "UPDATE `event` SET `".$name."`=\"".$column."\" WHERE `eventID` = \"".$eventID."\"";
+          $stmt = $conn->prepare($sql);
+      
+          if( $stmt->execute() ):
+            $message = 1;
+      
+          else:
+            $message = 2;
+          endif;
+      
+      }
+    }
   }
-
-  //Update entry
-  	$sql = "UPDATE `event` SET `".$name."`=\"".$column."\" WHERE `eventID` = \"".$eventID."\"";
-  	$stmt = $conn->prepare($sql);
-
-  	if( $stmt->execute() ):
-  		$message = 1;
-
-  	else:
-  		$message = 2;
-  	endif;
-
-}else{
-  //Update entry
-  	$sql = "UPDATE `event` SET `".$name."`=\"".$column."\" WHERE `eventID` = \"".$eventID."\"";
-  	$stmt = $conn->prepare($sql);
-
-  	if( $stmt->execute() ):
-  		$message = 1;
-
-  	else:
-  		$message = 2;
-  	endif;
-
-}
-}
 }
 
 //Update Log

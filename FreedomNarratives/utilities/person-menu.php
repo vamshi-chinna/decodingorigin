@@ -21,10 +21,11 @@
       <a style="width: 160px !important;"  class="btn btn-sm btn-warning shadow-sm" href="events_person.php?personID=<?php echo $person_data['personID'];?>"> <i class="fa fa-calendar"></i> Events</a><br><br>
 
       <a style="width: 160px !important;"  class="btn btn-sm btn-danger shadow-sm" href="objects_person.php?personID=<?php echo $person_data['personID'];?>"> <i class="fas fa-file"></i> Sources</a><br><br>
-
-      <?php if($results['security']>=0 & $person_data['project']=='FN' & $summary_generator_FN==1){ ?>
-      <a style="width: 160px !important; background-color: #B833FF; border-color: #B833FF;"  class="btn btn-sm text-white shadow-sm" href="#" data-toggle="modal" data-target="#summary_generator_FN"><i class="far fa-edit"></i> Generate Summary</a><br><br>
+      <?php if(isset($summary_generator_FN)): ?>
+        <?php if($results['security']>=0 & $person_data['project']=='FN' & $summary_generator_FN==1){ ?>
+        <a style="width: 160px !important; background-color: #B833FF; border-color: #B833FF;"  class="btn btn-sm text-white shadow-sm" href="#" data-toggle="modal" data-target="#summary_generator_FN"><i class="far fa-edit"></i> Generate Summary</a><br><br>
         <?php } ?>
+      <?php endif; ?>
       <?php if($results['security']>0 ){
         if($person_data['online']>0){?>
           <a style="width: 160px !important;"  class="btn btn-sm  shadow-sm" href="#" data-toggle="modal" data-target="#unpublish_confirm"><i class="fas fa-globe"></i> Unpublish</a><br><br>

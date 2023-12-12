@@ -209,44 +209,38 @@ require 'utilities/commands/object_update.php';
                       <?php
                       $current_URL=$_SERVER['REQUEST_URI'];
                       if($object_data['Adminupload']==0){?>
-                      <div class="row">
-
-                      <div class="col-xl-10 col-md-1 mb-1">
-                          <form action="utilities/commands_external/upload_object.php" method="POST" class="form-group" enctype="multipart/form-data">
-                            <input type="hidden" name="objectID" value="<?php echo $objectID;?>">
-                            <input type="hidden" name="personUI" value="<?php echo $person_data['UI'];?>">
-                         <input name="image" type="file" class="form-control-file" id="exampleFormControlFile1">
-                      </div>
-                      <div class="col-xl-2 col-md-2 mb-2">
-                        <?php if($results['security']>=0){ ?>
-                          <button type="submit" class="btn btn-primary float-right"><i class="fas fa-upload"></i></button>
-                        <?php } ?>
-                          </form>
-                      </div>
-
-
-
-
-                  </div>
+                        <div class="row">
+                          <div class="col-xl-10 col-md-1 mb-1">
+                              <form action="utilities/commands_external/upload_object.php" method="POST" class="form-group" enctype="multipart/form-data">
+                                <input type="hidden" name="objectID" value="<?php echo $objectID;?>">
+                                <input type="hidden" name="personUI" value="<?php echo $person_data['UI'];?>">
+                                <input name="image" type="file" class="form-control-file" id="exampleFormControlFile1">
+                          </div>
+                          <div class="col-xl-2 col-md-2 mb-2">
+                                <?php if($results['security']>=0){ ?>
+                                  <button type="submit" class="btn btn-primary float-right"><i class="fas fa-upload"></i></button>
+                                <?php } ?>
+                              </form>
+                          </div>
+                        </div>
                     <?php }
                     if($object_data['File']!='0'){?>
+                      <div class="row">
+                        <div class="col-xl-12 col-md-1 mb-1">
+                          <h4>
+                            <?php $newfilename=$person_data['UI']."_".$object_data['Field1'].".".$object_data['Format'];
+                            if($object_data['Format']=="PDF" or $object_data['Format']=="pdf"){ ?>
+                            <a download="<?php echo $newfilename; ?>" class="btn btn-warning col-xl-12 col-md-1 mb-1" href="<?php echo explode("?", $current_URL)[0].$object_data['File'];?>" onclick="window.open('<?php echo explode("?", $current_URL)[0].$object_data['File'];?>',
+                                            'newwindow',
+                                      'width=500,height=500');
+                                return false;" target="_blank"><i class="far fa-file"></i></i>  View File</a>
+                              <?php } else { ?>
+                                <a download="<?php echo $newfilename; ?>" class="btn btn-warning col-xl-12 col-md-1 mb-1" href="<?php echo explode("?", $current_URL)[0].$object_data['File'];?>" ><i class="far fa-file"></i></i> Downlaod File</a>
 
-                    <div class="row">
-                      <div class="col-xl-12 col-md-1 mb-1">
-                        <h4>
-                          <?php $newfilename=$person_data['UI']."_".$object_data['Field1'].".".$object_data['Format'];
-                          if($object_data['Format']=="PDF" or $object_data['Format']=="pdf"){ ?>
-                          <a download="<?php echo $newfilename; ?>" class="btn btn-warning col-xl-12 col-md-1 mb-1" href="<?php echo explode("?", $current_URL)[0].$object_data['File'];?>" onclick="window.open('<?php echo explode("?", $current_URL)[0].$object_data['File'];?>',
-                                          'newwindow',
-                                    'width=500,height=500');
-                              return false;" target="_blank"><i class="far fa-file"></i></i>  View File</a>
-                            <?php } else{ ?>
-                              <a download="<?php echo $newfilename; ?>" class="btn btn-warning col-xl-12 col-md-1 mb-1" href="<?php echo explode("?", $current_URL)[0].$object_data['File'];?>" ><i class="far fa-file"></i></i> Downlaod File</a>
-
-                            <?php }?>
-                        </h4>
+                              <?php }?>
+                          </h4>
                         </div>
-                    </div>
+                      </div>
                   <?php } ?>
 
 
