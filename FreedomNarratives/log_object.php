@@ -84,8 +84,11 @@ $message=0;
                         <div class="card-body">
                             <div class="text-white-50 small">
                               <h3><i class="fas fa-file"></i> Log
-                                <a href="<?php echo $_SERVER['HTTP_REFERER'];?>"><i class="fas fa-times float-right text-white-50"></i></h3></a>
+                                <a href="<?php echo $_SERVER['HTTP_REFERER'];?>"><i class="fas fa-times float-right text-white-50"></i></a>
+                              </h3>
+                              <?php if(isset($table)): ?>
                                 <h5><?php echo substr(str_replace("_"," ",$table),3);?></h5>
+                              <?php endif; ?>
                             </div>
 
                         </div>

@@ -100,7 +100,12 @@ if($field!=""){
   foreach ($_POST as $name => $val){
     if($name!="action"){
       if($_POST[$name]!="on" || $_POST[$name]=="0" ){
-        $column = htmlspecialchars($val, ENT_QUOTES);
+        if(is_array($val)){
+          $val_string = implode(";",$val);
+          $column = htmlspecialchars($val_string, ENT_QUOTES);
+        } else {
+          $column = htmlspecialchars($val, ENT_QUOTES);
+        }
 
         $q1_fieldtype="SELECT `FieldType`,`Options` FROM `".$object_data['doctype']."` WHERE `ColumnName`LIKE '".$name."'";
 
