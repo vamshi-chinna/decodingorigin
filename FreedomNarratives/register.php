@@ -34,7 +34,7 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900"><b>Decoding Origins Web Portal</b></h1>
                 <p><i>for Freedom Narratives</i></p>
-                <h3 class="h4 text-gray-900 mb-4">Create an Account!</h3>
+                <h3 class="h4 text-gray-900 mb-4">Create an Account!!</h3>
               </div>
               <form class="user pt-5" action="utilities/commands_external/register.php" method="post">
                 <div class="form-group row">
@@ -53,7 +53,7 @@
                 </div>
                 <div class="form-group">
 
-                    <input name="password" type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                    <input name="security" type="text" class="form-control form-control-user" id="exampleInputPassword" placeholder="0=RA; 1=PD; 2=SA">
 
                 </div>
                 <?php
