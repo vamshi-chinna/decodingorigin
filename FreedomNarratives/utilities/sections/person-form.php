@@ -396,25 +396,23 @@
                       die( "Connection failed: " . $e->getMessage());
                     }
                   
-                    $q_project_list="SELECT `UI` as `ID`,`Name` FROM `person`";
+                    $q_project_list="SELECT `UI` as `ID`,`Name` FROM `person` WHERE `online`='1'";
                     $project_person_list = $conn_project_ext->query($q_project_list);
                   ?>
 
-                  <div class="" style="height:120px;overflow:auto;width:100%;border:1px;">
+                  <select onchange="slection_made()" class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
                     <?php while($selected_word = $project_person_list->fetch(PDO::FETCH_ASSOC)){
-                      $disable_flag="";
-
+                      $disable_flag = "";
                       foreach($selectedoptions_Array as $opt_selected){
                         if($opt_selected==$selected_word['ID']){
-                          $disable_flag="checked";
+                          $disable_flag="selected";
                         }
                       }
-                      
-                      echo "<div class=\"form-control\">";
-                      echo "<input type=\"checkbox\" name=\"".$columns['ColumnName']."[]\" ".$disable_flag." value=\"".$selected_word['ID']."\"> ".$selected_word['ID']." - ".$selected_word['Name']."</input>";
-                      echo "</div>";
+                      echo '<option value="'.$selected_word['ID'].'" '.$disable_flag.'>'.$selected_word['ID'].' - '.$selected_word['Name'].'</option>';
+
                     } ?>
-                  </div>
+                  </select>
+
                 </div>
               <?php
               }
