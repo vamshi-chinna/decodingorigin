@@ -322,60 +322,102 @@
               // For Dropdown Menu - Controlled Vocaublary from Tables
               if($columns['FieldType']=="dropdown-CV"){
                ?>
+                <div class="form-group">
+                <label for="exampleInputEmail1"><?php echo $columns['display'];?>
+                  <?php
 
-              <div class="form-group">
-              <label for="exampleInputEmail1"><?php echo $columns['display'];?>
+                  $instructions="instructions.php?type=".$doctype."&fieldID=".$columns['id'];?>
+                  <a href="<?php echo $instructions;?>.php" onclick="window.open('<?php echo $instructions;?>',
+                                          'newwindow',
+                                    'width=500,height=500');
+                              return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
+                  <a href="<?php echo explode("&message", $current_URL)[0];?>&message=5&table=<?php echo $columns['Options'];?>"><i class="fas fa-plus-square"></i></a>
+                  <?php if($columns['Options']=="CV_Place" & $person_data[$columns['ColumnName']]!=0){ ?>
+                    <a href="<?php echo explode("&message", $current_URL)[0];?>&message=6&place=<?php echo $person_data[$columns['ColumnName']];?>"><i class="fas fa-map-marker-alt"></i></a>
+
+                  <?php } ?>
+                </label>
                 <?php
 
-                $instructions="instructions.php?type=".$doctype."&fieldID=".$columns['id'];?>
-                <a href="<?php echo $instructions;?>.php" onclick="window.open('<?php echo $instructions;?>',
-                                         'newwindow',
-                                   'width=500,height=500');
-                             return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
-                <a href="<?php echo explode("&message", $current_URL)[0];?>&message=5&table=<?php echo $columns['Options'];?>"><i class="fas fa-plus-square"></i></a>
-                <?php if($columns['Options']=="CV_Place" & $person_data[$columns['ColumnName']]!=0){ ?>
-                  <a href="<?php echo explode("&message", $current_URL)[0];?>&message=6&place=<?php echo $person_data[$columns['ColumnName']];?>"><i class="fas fa-map-marker-alt"></i></a>
+                //Loading Value for Key in Person Table
+                $q1="SELECT `ID`,`Name` FROM `".$columns['Options']."` WHERE `ID`=".$person_data[$columns['ColumnName']];
+                $query_CL = $conn->query($q1);
+                $selected_Name = $query_CL->fetch(PDO::FETCH_ASSOC);
 
-                <?php } ?>
-              </label>
-              <?php
+                // Loading Controlled Vocaublary
+                $q1="SELECT `ID`,`Name` FROM `".$columns['Options']."` WHERE `Status` LIKE '1' ORDER BY `listorder`";
+                $query_CL = $conn->query($q1);
 
-              //Loading Value for Key in Person Table
-              $q1="SELECT `ID`,`Name` FROM `".$columns['Options']."` WHERE `ID`=".$person_data[$columns['ColumnName']];
-              $query_CL = $conn->query($q1);
-              $selected_Name = $query_CL->fetch(PDO::FETCH_ASSOC);
+                ?>
 
-
-
-              // Loading Controlled Vocaublary
-              $q1="SELECT `ID`,`Name` FROM `".$columns['Options']."` WHERE `Status` LIKE '1' ORDER BY `listorder`";
-              $query_CL = $conn->query($q1);
-
-
-              ?>
-
-               <select onchange="slection_made()" class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>" <?php if($columns['status']==0){echo "Disabled";}?>>
-
+                <select onchange="slection_made()" class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>" <?php if($columns['status']==0){echo "Disabled";}?>>
 
                  <?php while($selected_word = $query_CL->fetch(PDO::FETCH_ASSOC)){
 
                    if($person_data[$columns['ColumnName']]==$selected_word['ID']){
-
-
                     // echo "<option value=\"".$selected_word['ID']."\">".$selected_word['Name']."</option>";
                      echo "<option value=\"".$selected_word['ID']."\" selected hidden>".$selected_Name['Name']."</option>";
-
-                   }
-                   else {
+                   } else {
                       echo "<option value=\"".$selected_word['ID']."\">".$selected_word['Name']."</option>";
                    }
                  } ?>
+                </select>
 
-                   </select>
+              </div>
+              <?php
+              }
 
+              // For Dropdown Menu - Related Projects
+              if($columns['FieldType']=="project-connect"){ ?>
+                  
+                <div class="form-group">
+                  <label for="exampleInputEmail1"><?php echo $columns['display'];?>
+                    <?php $instructions="instructions.php?type=".$doctype."&fieldID=".$columns['id'];?>
+                    <a href="<?php echo $instructions;?>.php" onclick="window.open('<?php echo $instructions;?>','newwindow','width=500,height=500');return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
+                  </label>
+                  <?php
+                    // Loading Value for Key in Person Table 
+                    $selectedoptions = $person_data[$columns['ColumnName']];
+                    $selectedoptions_Array = explode(';',$selectedoptions);
+
+                    // Loading List from External Project
+                    $q1="SELECT `Host`,`username`,`password`,`database_name` FROM `".$columns['Options']."` WHERE `ID` LIKE '1'";
+                    $query_CL = $conn->query($q1);
+                    $project_db = $query_CL->fetch(PDO::FETCH_ASSOC);
+  
+                    $server = $project_db['Host'];
+                    $username = $project_db['username'];
+                    $password = $project_db['password'];
+                    $database = $project_db['database_name'];
+                  
+                    try{
+                      $conn_project_ext = new PDO("mysql:host=$server;dbname=$database;", $username, $password);
+                    } catch(PDOException $e){
+                      die( "Connection failed: " . $e->getMessage());
+                    }
+                  
+                    $q_project_list="SELECT `UI` as `ID`,`Name` FROM `person`";
+                    $project_person_list = $conn_project_ext->query($q_project_list);
+                  ?>
+
+                  <div class="" style="height:120px;overflow:auto;width:100%;border:1px;">
+                    <?php while($selected_word = $project_person_list->fetch(PDO::FETCH_ASSOC)){
+                      $disable_flag="";
+
+                      foreach($selectedoptions_Array as $opt_selected){
+                        if($opt_selected==$selected_word['ID']){
+                          $disable_flag="checked";
+                        }
+                      }
+                      
+                      echo "<div class=\"form-control\">";
+                      echo "<input type=\"checkbox\" name=\"".$columns['ColumnName']."[]\" ".$disable_flag." value=\"".$selected_word['ID']."\"> ".$selected_word['ID']." - ".$selected_word['Name']."</input>";
+                      echo "</div>";
+                    } ?>
+                  </div>
                 </div>
               <?php
-                 }
+              }
 
           // For Dropdown Menu - Load Researchers
             if($columns['FieldType']=="dropdown" & $columns['Options']=="Researcher"){
@@ -475,7 +517,7 @@
                 }
               }
               echo "<div class=\"form-control\">";
-              echo "<input type=\"checkbox\" name=\"".$columns['ColumnName']."[]\" ".$disable_flag." value=\"".$selected_word['ID']."\">".$selected_word['Name']."</option>";
+              echo "<input type=\"checkbox\" name=\"".$columns['ColumnName']."[]\" ".$disable_flag." value=\"".$selected_word['ID']."\"> ".$selected_word['Name']."</option>";
               echo "</div>";
             } ?>
           </div>
