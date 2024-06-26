@@ -28,6 +28,7 @@ foreach ($_POST as $name => $val)
       if($CV_identifer['FieldType']=="dropdown-CV-multi" & $CV_identifer['ColumnName']==$name)
       {
         $CV_table_name=$CV_identifer['Options'];
+        $multi_flag=1;
       }
       if($CV_identifer['FieldType']=="dropdown" & $CV_identifer['Options']=="Researcher")
       {
