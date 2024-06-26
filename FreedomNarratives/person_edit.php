@@ -354,12 +354,36 @@ require 'utilities/commands/person_update.php';
   <script>
   $(document).ready(function(){
 
+    function formatProjectConnector(pconn){
+      if(!pconn.id || pconn.id == null){
+        return pconn.text;
+      }
+      var recordurl = pconn.title;
+      var $option = $("<span></span>");
+      var $preview = $('<a target="_blank" class="proj-connect-link">View Record</a>');
+      $preview.prop("href",recordurl);
+      $preview.on('mouseup',function(evt){
+        // Select2 will remove the dropdown on `mouseup`, which will prevent any `click` events from being triggered
+        // So we need to block the propagation of the `mouseup` event
+        evt.stopPropagation();
+      }); 
+
+      $preview.on('click', function(evt){
+        console.log('the link was clicked');
+      });
+
+      $option.text(pconn.text);
+      $option.append($preview);
+
+      return $option;
+    }
+
     // Initialize select2
     $(".searchdropdown").select2();
 
-    $('.multiselect2').select2({
-      placeholder: "Choose one or more options"
-    })
+    $(".project-connect").select2({
+      templateResult: formatProjectConnector
+    });
 
   });
 
