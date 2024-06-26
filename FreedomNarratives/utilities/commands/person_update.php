@@ -1,7 +1,7 @@
 <?php
 
 //Loading values
-if($_POST['action']=="Update"){
+if(isset($_POST['action']) && $_POST['action']=="Update"){
 $type="person";
 $field="";
 $field_log="";
@@ -50,7 +50,7 @@ foreach ($_POST as $name => $val)
             $column_opt=$column_opt.$CV_value.";";
             $column_opt_id=$column_opt_id.$option.";";
           }
-          if($event_data[$name]!=$column_opt_id){
+          if($person_data[$name]!=$column_opt_id){
             $field_log=$field_log.htmlspecialchars($Display_name['display'] . ' : ' . $column_opt, ENT_QUOTES) . " <br> ";
           }
         } else {
@@ -81,7 +81,7 @@ foreach ($_POST as $name => $val)
           $column_opt=$column_opt.$option.";";
           $column_opt_id=$column_opt_id.$option.";";
         }
-        if($event_data[$name]!=$column_opt_id){
+        if(isset($person_data[$name]) && $person_data[$name]!=$column_opt_id){
           $field_log=$field_log.htmlspecialchars($Display_name['display'] . ' : ' . $column_opt, ENT_QUOTES) . " <br> ";
         }
       } else {
@@ -98,73 +98,70 @@ if($field!=""){
 
   foreach ($_POST as $name => $val){
 
-if($_POST[$name]!="on" || $_POST[$name]=="0" ){
+    if($_POST[$name]!="on" || $_POST[$name]=="0" ){
 
-  if(is_array($val)){
-    $val_values = implode(";",$val);
-    $column = htmlspecialchars($val_values, ENT_QUOTES);
+      if(is_array($val)){
+        $val_values = implode(";",$val);
+        $column = htmlspecialchars($val_values, ENT_QUOTES);
+      } else {
+        $column = htmlspecialchars($val, ENT_QUOTES);
+      }
+
+      $q1_fieldtype="SELECT `FieldType`,`Options` FROM `".$person_data['doctype']."` WHERE `ColumnName`LIKE '".$name."'";
+
+      $query_fieldtype = $conn->query($q1_fieldtype);
+      $fieldtype_data = $query_fieldtype->fetch(PDO::FETCH_ASSOC);
+      if($fieldtype_data){
+        $fieldtype=$fieldtype_data['FieldType'];
+        $researcher_flag = $fieldtype_data['Options'];
+
+        if($fieldtype=="dropdown-CV-multi" || ($fieldtype=="dropdown" & $researcher_flag=="Researcher")){
+          $column="";
+          foreach($_POST[$name] as $option){
+            $column=$column.$option.";";
+          }
+        
+          //Update entry
+            $sql = "UPDATE `person` SET `".$name."`=\"".$column."\" WHERE `personID` = \"".$personID."\"";
+            $stmt = $conn->prepare($sql);
+        
+            if( $stmt->execute() ):
+              $message = 1;
+        
+            else:
+              $message = 2;
+            endif;
+        
+        } else {
+          //Update entry
+        
+          $sql = "UPDATE `person` SET `".$name."`=\"".$column."\" WHERE `personID` = \"".$personID."\"";
+          $stmt = $conn->prepare($sql);
+        
+          if( $stmt->execute() ):
+            $message = 1;
+        
+          else:
+            $message = 2;
+          endif;
+        
+        }
+      }
+    }
+  }
+
+  //Update Log
+  $action="Updated";
+
+  $sql = "INSERT INTO `log` (`ID`,`type`,`TimeDate`,`RA`,`field`,`action`) VALUES ('".$personID."','".$type."','".$TimeDate."','".$RA."','".$field_log."','".$action."')";
+  $stmt = $conn->prepare($sql);
+  if( $stmt->execute() ):
+      $message = 1;
+    else:
+      $message = 2;
+    endif;
   } else {
-    $column = htmlspecialchars($val, ENT_QUOTES);
+    $message=2;
   }
-
-$q1_fieldtype="SELECT `FieldType`,`Options` FROM `".$person_data['doctype']."` WHERE `ColumnName`LIKE '".$name."'";
-$query_fieldtype = $conn->query($q1_fieldtype);
-$fieldtype_data = $query_fieldtype->fetch(PDO::FETCH_ASSOC);
-$fieldtype=$fieldtype_data['FieldType'];
-$researcher_flag = $fieldtype_data['Options'];
-if($fieldtype=="dropdown-CV-multi" || ($fieldtype=="dropdown" & $researcher_flag=="Researcher")){
-  $column="";
-  foreach($_POST[$name] as $option){
-    $column=$column.$option.";";
-  }
-
-  //Update entry
-  	$sql = "UPDATE `person` SET `".$name."`=\"".$column."\" WHERE `personID` = \"".$personID."\"";
-  	$stmt = $conn->prepare($sql);
-
-  	if( $stmt->execute() ):
-  		$message = 1;
-
-  	else:
-  		$message = 2;
-  	endif;
-
-}else{
-
-
-//Update entry
-
-	$sql = "UPDATE `person` SET `".$name."`=\"".$column."\" WHERE `personID` = \"".$personID."\"";
-	$stmt = $conn->prepare($sql);
-
-	if( $stmt->execute() ):
-		$message = 1;
-
-	else:
-		$message = 2;
-	endif;
-
-
-
-}
-}
-}
-
-//Update Log
-$action="Updated";
-
-    $sql = "INSERT INTO `log` (`ID`,`type`,`TimeDate`,`RA`,`field`,`action`) VALUES ('".$personID."','".$type."','".$TimeDate."','".$RA."','".$field_log."','".$action."')";
-    $stmt = $conn->prepare($sql);
-    if( $stmt->execute() ):
-  		$message = 1;
-
-  	else:
-  		$message = 2;
-  	endif;
-}
-
-else{
-  $message=2;
-}
 }
  ?>

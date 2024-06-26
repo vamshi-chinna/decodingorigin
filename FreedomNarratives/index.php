@@ -69,7 +69,7 @@ require 'utilities/database_SS.php';
                     $dashboard="SELECT * FROM `Dashboard` ORDER BY `TimeStamp` DESC";
                     $dashboard_q = $conn_regid->query($dashboard);
                    while($dashboardData = $dashboard_q->fetch(PDO::FETCH_ASSOC)){
-                     if($results[$dashboardData['Project']]>0 ||  $dashboardData['Project']=="%"){ ?>
+                     if(isset($results[$dashboardData['Project']]) && $results[$dashboardData['Project']]>0 || $dashboardData['Project']=="%"){ ?>
 
                       <?php if($dashboardData['Project']=="%")
                        {

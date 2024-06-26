@@ -242,7 +242,7 @@
           <?php
           require '../decodingorigins-login/database_login.php';
 
-          $q_user="SELECT * FROM `users` WHERE `".$object_data['project']."`=1";
+          $q_user="SELECT * FROM `users` WHERE `".$object_data['project']."`=1 order by `lname` ASC";
           $query_user = $conn->query($q_user);
 
 

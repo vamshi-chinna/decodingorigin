@@ -4,66 +4,57 @@ if( isset($_SESSION['user_id']) ):
 require 'utilities/user-check.php';
 require 'utilities/database_SS.php';
 
+  $q2="SELECT * FROM `person` WHERE `personID` LIKE '".$_GET['personID']."'";
+  $query2 = $conn->query($q2);
+  $person= $query2->fetch(PDO::FETCH_ASSOC);
 
+  $doctype=$person['doctype'];
 
+  $q1="SELECT * FROM `".$doctype."`";
+  $query1 = $conn->query($q1);
 
-$q1="SELECT * FROM `".$doctype."`";
-$query1 = $conn->query($q1);
-$q2="SELECT * FROM `person` WHERE `personID` LIKE '".$_GET['personID']."'";
-$query2 = $conn->query($q2);
-$person= $query2->fetch(PDO::FETCH_ASSOC);
-
-
-$doctype=$person['doctype'];
-
-//NEW ENTRY
-$date = new DateTime();
-$TimeDate = $date->format('Y-m-d H:i:s');
-$date_only = $date->format('Y-m-d');
-$personID = $_GET['personID'];
-$RA = $results['fname']."".$results['lname'];
-$field="";
-$k=0;$total_col=0;
-
-
-
-  //***************************************************
-  // Update Assignedto
-  if($_GET['action']=="forward" ){
-  $personID = $_GET['personID'];
-  $assignedto = $_POST['assignedto'];
-  $message =$_POST['message'];
-  $field="Forwarded To : ".$assignedto."<br>Message : ".$message;
+  //NEW ENTRY
   $date = new DateTime();
   $TimeDate = $date->format('Y-m-d H:i:s');
   $date_only = $date->format('Y-m-d');
-  $RA = $results['fname']." ".$results['lname'];
+  $personID = $_GET['personID'];
+  $RA = $results['fname']."".$results['lname'];
+  $field="";
+  $k=0;$total_col=0;
 
-  //Update entry
+  //***************************************************
+  // Update Assignedto
+  if(isset($_GET['action']) && $_GET['action']=="forward" ){
+    $personID = $_GET['personID'];
+    $assignedto = $_POST['assignedto'];
+    $message =$_POST['message'];
+    $field="Forwarded To : ".$assignedto."<br>Message : ".$message;
+    $date = new DateTime();
+    $TimeDate = $date->format('Y-m-d H:i:s');
+    $date_only = $date->format('Y-m-d');
+    $RA = $results['fname']." ".$results['lname'];
+
+    //Update entry
     $sql = "UPDATE `person` SET `assigneddate`=\"".$TimeDate."\",`assignedto`=\"".$assignedto."\",`message` =\"".$message."\",`assignedby` = \"".$RA."\" WHERE `personID` = \"".$personID."\"";
     $stmt = $conn->prepare($sql);
 
-
     if( $stmt->execute() ):
-
       $action="Task Forwarded";
       $sql_log = "INSERT INTO `log` (`ID`,`type`,`TimeDate`,`RA`,`field`,`action`) VALUES ('".$personID."','person','".$TimeDate."','".$RA."','".$field."','".$action."')";
       $stmt_log = $conn->prepare($sql_log);
 
-          if( $stmt_log->execute() )
-            {
-            $message = 1;
-            }
-          else	{
-            $message = 3;
+      if( $stmt_log->execute() ){
+        $message = 1;
+      } else	{
+        $message = 3;
 
-            }
+      }
     else:
       $message = 2;
     endif;
-  //End of Update Entry
+    //End of Update Entry
 
-    }
+  }
 
  ?>
  <!DOCTYPE html>
@@ -148,7 +139,7 @@ $k=0;$total_col=0;
             <div class="col-xl-6 col-md-6 mb-12">
           <div class="col-xl-8 col-md-6 mb-12">
             <h4>Assignment Form</h4>
-            <form action="forward.php?page=<?php echo $_GET['page'];?>&request=<?php echo $_GET['request'];?>&personID=<?php echo $_GET['personID'];?>&doctype=<?php echo $_GET['doctype'];?>&action=forward" method="POST">
+            <form action="forward.php?page=<?php echo isset($_GET['page'])? $_GET['page']:'';?>&request=<?php echo isset($_GET['request'])? $_GET['request']:'';?>&personID=<?php echo $_GET['personID'];?>&doctype=<?php echo $doctype;?>&action=forward" method="POST">
 
               <input name="action" value="forward" type=hidden>
 
@@ -214,7 +205,7 @@ $k=0;$total_col=0;
           <div class="col-xl-6 col-md-6 mb-12">
             <div class="col-xl-8 col-md-6 mb-12">
               <h4>Current Status</h4>
-              <form action="forward.php?page=<?php echo $_GET['page'];?>&request=<?php echo $_GET['request'];?>&personID=<?php echo $_GET['personID'];?>&doctype=<?php echo $_GET['doctype'];?>&action=forward" method="POST">
+              <form action="forward.php?page=<?php echo isset($_GET['page'])? $_GET['page']:'';?>&request=<?php echo isset($_GET['request']) ? $_GET['request']:'';?>&personID=<?php echo $_GET['personID'];?>&doctype=<?php echo $doctype;?>&action=forward" method="POST">
 
                 <input name="action" value="forward" type=hidden>
 
@@ -392,7 +383,7 @@ $k=0;$total_col=0;
   <!--Success Message Display-->
   <?php
   # Success Message box
-  if ($message == 1) :
+  if (isset($message) && $message == 1) :
     ?>
 
     <script>
@@ -405,7 +396,7 @@ $k=0;$total_col=0;
   <!--Error Message Display-->
   <?php
   # Error Message box
-  if ($message == 2) :
+  if (isset($message) && $message == 2) :
     ?>
 
     <script>
@@ -418,7 +409,7 @@ $k=0;$total_col=0;
   <!--Error1 Message Display-->
   <?php
   # Error Message box
-  if ($message == 3) :
+  if (isset($message) && $message == 3) :
     ?>
 
     <script>

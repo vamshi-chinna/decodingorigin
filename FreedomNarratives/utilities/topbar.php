@@ -16,7 +16,7 @@
     <div class="input-group">
       <input type="hidden" name="projectID" value="<?php echo $_GET['projectID'];?>">
 
-      <input type="text" name="search" class="form-control bg-light border-0 small" placeholder="Search by ID number or Names" value="<?php echo $_GET['search'];?>" aria-label="Search" aria-describedby="basic-addon2">
+      <input type="text" name="search" class="form-control bg-light border-0 small" placeholder="Search by ID number or Names" value="<?php echo isset($_GET['search']) ? $_GET['search'] : '' ;?>" aria-label="Search" aria-describedby="basic-addon2">
       <div class="input-group-append">
         <button class="btn btn-primary" type="submit">
           <i class="fas fa-search fa-sm"></i>

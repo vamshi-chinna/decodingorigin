@@ -12007,3 +12007,22 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+/* Code for Select2 View Record Buttons */
+a.proj-connect-link{
+  float:right;
+  color:black;
+  background-color:#EDEDED;
+  padding:2px 12px;
+  border-radius:2px;
+  margin-top:-2px;
+  margin-left:16px;
+  text-decoration:none;
+}
+
+a.proj-connect-link:hover{
+  text-decoration:none;
+  font-weight: bold;
+  background-color: #17a673;
+  color:#EDEDED;
+}
