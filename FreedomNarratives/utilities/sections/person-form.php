@@ -381,7 +381,7 @@
                     $selectedoptions_Array = explode(';',$selectedoptions);
 
                     // Loading List from External Project
-                    $q1="SELECT `Host`,`username`,`password`,`database_name` FROM `".$columns['Options']."` WHERE `ID` LIKE '1'";
+                    $q1="SELECT `Host`,`username`,`password`,`database_name`,`url` FROM `DB_CONN` WHERE `db_id` LIKE '".$columns['Options']."'";
                     $query_CL = $conn->query($q1);
                     $project_db = $query_CL->fetch(PDO::FETCH_ASSOC);
   
@@ -389,6 +389,7 @@
                     $username = $project_db['username'];
                     $password = $project_db['password'];
                     $database = $project_db['database_name'];
+                    $project_conn_link = $project_db['url'];
                   
                     try{
                       $conn_project_ext = new PDO("mysql:host=$server;dbname=$database;", $username, $password);
@@ -396,7 +397,7 @@
                       die( "Connection failed: " . $e->getMessage());
                     }
                   
-                    $q_project_list="SELECT `UI` as `ID`,`Name` FROM `person` WHERE `online`='1'";
+                    $q_project_list="SELECT `personID`,`UI` as `ID`,`Name` FROM `person` WHERE `online`='1'";
                     $project_person_list = $conn_project_ext->query($q_project_list);
                   ?>
 
@@ -489,7 +490,6 @@
 
               } ?>
             </select>
-
           </div>
           <?php
             }

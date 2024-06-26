@@ -5,14 +5,15 @@ if(isset($_POST['action']) && $_POST['action']=="Update"){
 $type="object";
 $field="";
 $field_log="";
+
 foreach ($_POST as $name => $val)
 {
   if($name !="action"){
     $CV_flag=0;
+    $multi_flag=0;
     $q1_fieldName="SELECT `display` FROM `".$object_data['doctype']."` WHERE `ColumnName`LIKE '".$name."'";
     $query_fieldName = $conn->query($q1_fieldName);
     $Display_name = $query_fieldName->fetch(PDO::FETCH_ASSOC);
-
 
     //Loading Value for Key in Object Table
     $q1="SELECT * FROM ".$object_data['doctype'];
@@ -22,6 +23,10 @@ foreach ($_POST as $name => $val)
       if($CV_identifer['FieldType']=="dropdown-CV" & $CV_identifer['ColumnName']==$name)
       {
         $CV_flag=1;
+        $CV_table_name=$CV_identifer['Options'];
+      }
+      if($CV_identifer['FieldType']=="dropdown-CV-multi" & $CV_identifer['ColumnName']==$name)
+      {
         $CV_table_name=$CV_identifer['Options'];
       }
       if($CV_identifer['FieldType']=="dropdown" & $CV_identifer['Options']=="Researcher")
@@ -111,36 +116,38 @@ if($field!=""){
 
         $query_fieldtype = $conn->query($q1_fieldtype);
         $fieldtype_data = $query_fieldtype->fetch(PDO::FETCH_ASSOC);
-        $fieldtype=$fieldtype_data['FieldType'];
-        $researcher_flag = $fieldtype_data['Options'];
+        if($fieldtype_data){
+          $fieldtype=$fieldtype_data['FieldType'];
+          $researcher_flag = $fieldtype_data['Options'];
 
-        if($fieldtype=="dropdown-CV-multi" || ($fieldtype=="dropdown" & $researcher_flag=="Researcher")){
-          $column="";
-          foreach($_POST[$name] as $option){
-           $column=$column.$option.";";
+          if($fieldtype=="dropdown-CV-multi" || ($fieldtype=="dropdown" & $researcher_flag=="Researcher")){
+            $column="";
+            foreach($_POST[$name] as $option){
+            $column=$column.$option.";";
+            }
+    
+            //Update entry
+            $sql = "UPDATE `object` SET `".$name."`=\"".$column."\" WHERE `objectID` = \"".$objectID."\"";
+            $stmt = $conn->prepare($sql);
+    
+            if( $stmt->execute() ):
+              $message = 1;
+    
+            else:
+              $message = 2;
+            endif;
+          } else {
+            //Update entry
+            $sql = "UPDATE `object` SET `".$name."`=\"".$column."\" WHERE `objectID` = \"".$objectID."\"";
+            $stmt = $conn->prepare($sql);
+      
+            if( $stmt->execute() ):
+              $message = 1;
+      
+            else:
+              $message = 2;
+            endif;
           }
-  
-          //Update entry
-          $sql = "UPDATE `object` SET `".$name."`=\"".$column."\" WHERE `objectID` = \"".$objectID."\"";
-          $stmt = $conn->prepare($sql);
-  
-          if( $stmt->execute() ):
-            $message = 1;
-  
-          else:
-            $message = 2;
-          endif;
-        } else {
-          //Update entry
-          $sql = "UPDATE `object` SET `".$name."`=\"".$column."\" WHERE `objectID` = \"".$objectID."\"";
-          $stmt = $conn->prepare($sql);
-    
-          if( $stmt->execute() ):
-            $message = 1;
-    
-          else:
-            $message = 2;
-          endif;
         }
       }
     }
@@ -151,11 +158,10 @@ if($field!=""){
     $sql = "INSERT INTO `log` (`ID`,`type`,`TimeDate`,`RA`,`field`,`action`) VALUES ('".$objectID."','".$type."','".$TimeDate."','".$RA."','".$field_log."','".$action."')";
     $stmt = $conn->prepare($sql);
     if( $stmt->execute() ):
-  		$message = 1;
-
-  	else:
-  		$message = 2;
-  	endif;
+      $message = 1;
+    else:
+      $message = 2;
+    endif;
   } else {
     $message=2;
   }

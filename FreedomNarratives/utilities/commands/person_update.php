@@ -50,7 +50,7 @@ foreach ($_POST as $name => $val)
             $column_opt=$column_opt.$CV_value.";";
             $column_opt_id=$column_opt_id.$option.";";
           }
-          if($event_data[$name]!=$column_opt_id){
+          if($person_data[$name]!=$column_opt_id){
             $field_log=$field_log.htmlspecialchars($Display_name['display'] . ' : ' . $column_opt, ENT_QUOTES) . " <br> ";
           }
         } else {
@@ -81,7 +81,7 @@ foreach ($_POST as $name => $val)
           $column_opt=$column_opt.$option.";";
           $column_opt_id=$column_opt_id.$option.";";
         }
-        if(isset($event_data[$name]) && $event_data[$name]!=$column_opt_id){
+        if(isset($person_data[$name]) && $person_data[$name]!=$column_opt_id){
           $field_log=$field_log.htmlspecialchars($Display_name['display'] . ' : ' . $column_opt, ENT_QUOTES) . " <br> ";
         }
       } else {
@@ -108,6 +108,7 @@ if($field!=""){
       }
 
       $q1_fieldtype="SELECT `FieldType`,`Options` FROM `".$person_data['doctype']."` WHERE `ColumnName`LIKE '".$name."'";
+
       $query_fieldtype = $conn->query($q1_fieldtype);
       $fieldtype_data = $query_fieldtype->fetch(PDO::FETCH_ASSOC);
       if($fieldtype_data){
@@ -149,21 +150,18 @@ if($field!=""){
     }
   }
 
-//Update Log
-$action="Updated";
+  //Update Log
+  $action="Updated";
 
-    $sql = "INSERT INTO `log` (`ID`,`type`,`TimeDate`,`RA`,`field`,`action`) VALUES ('".$personID."','".$type."','".$TimeDate."','".$RA."','".$field_log."','".$action."')";
-    $stmt = $conn->prepare($sql);
-    if( $stmt->execute() ):
-  		$message = 1;
-
-  	else:
-  		$message = 2;
-  	endif;
-}
-
-else{
-  $message=2;
-}
+  $sql = "INSERT INTO `log` (`ID`,`type`,`TimeDate`,`RA`,`field`,`action`) VALUES ('".$personID."','".$type."','".$TimeDate."','".$RA."','".$field_log."','".$action."')";
+  $stmt = $conn->prepare($sql);
+  if( $stmt->execute() ):
+      $message = 1;
+    else:
+      $message = 2;
+    endif;
+  } else {
+    $message=2;
+  }
 }
  ?>
