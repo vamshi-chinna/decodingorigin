@@ -330,8 +330,10 @@ require 'utilities/commands/object_update.php';
         return pconn.text;
       }
       var recordurl = pconn.title;
-      var $option = $("<span></span>");
-      var $preview = $('<a target="_blank" class="proj-connect-link">View Record</a>');
+      var $option = $('<span class="opt"></span>');
+      var $option_text = $('<span class="pull_left"></span>');
+      var $option_link = $('<span class="pull_right"></span>');
+      var $preview = $('<a target="_blank" class="btn proj-connect-link">View Record</a>');
       $preview.prop("href",recordurl);
       $preview.on('mouseup',function(evt){
         // Select2 will remove the dropdown on `mouseup`, which will prevent any `click` events from being triggered
@@ -339,12 +341,11 @@ require 'utilities/commands/object_update.php';
         evt.stopPropagation();
       }); 
 
-      $preview.on('click', function(evt){
-        console.log('the link was clicked');
-      });
+      $option_text.text(pconn.text);
+      $option_link.append($preview);
 
-      $option.text(pconn.text);
-      $option.append($preview);
+      $option.append($option_text);
+      $option.append($option_link);
 
       return $option;
     }

@@ -104,21 +104,13 @@ require 'utilities/database_SS.php';?>
     <span> Full Sources</span></a>
 
 </li>
-<li class="nav-item">
-  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-    <i class="fas fa-edit"></i>
-    <span>Controlled Vocabularies</span>
-  </a>
-  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-    <div class="bg-white py-2 collapse-inner rounded">
-      <?php if($results['security']>0){?>
-      <a class="collapse-item" href="CV_approval.php">Approve Requests</a>
-    <?php } ?>
-      <a class="collapse-item" href="CV_tables.php">Edit/Update</a>
 
-    </div>
-  </div>
+<li class="nav-item active">
+  <a class="nav-link" href="CV_tables.php">
+    <i class="fas fa-edit"></i>
+    <span>Controlled Vocabularies</span></a>
 </li>
+
 <!-- Nav Item - Dashboard -->
 <?php if($results['security']>0){?>
 <li class="nav-item active">
