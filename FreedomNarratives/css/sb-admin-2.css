@@ -12016,13 +12016,40 @@ a.proj-connect-link{
   padding:2px 12px;
   border-radius:2px;
   margin-top:-2px;
-  margin-left:16px;
+  text-decoration:none;
+  font-size:0.9rem;
+}
+
+a.view-source {
+  color:black;
+  background-color:#EDEDED;
   text-decoration:none;
 }
 
-a.proj-connect-link:hover{
+a.proj-connect-link:hover, a.view-source:hover {
   text-decoration:none;
   font-weight: bold;
   background-color: #17a673;
   color:#EDEDED;
+}
+
+.pull_left {
+  float: left;
+  width: 66%;
+}
+
+.pull_right {
+  float: right;
+  width: 33%;
+}
+
+span.opt {
+  width: 100%;
+  height:fit-content;
+  display:inline-block;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: #CDCDCD!important;
+  color: black!important;
 }

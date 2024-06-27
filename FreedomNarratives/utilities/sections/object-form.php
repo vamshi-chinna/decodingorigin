@@ -115,6 +115,33 @@ for(let i=0;i<field_name.length;i++){
              <?php
                  }
 
+            //For Text boxes
+            if($columns['FieldType']=="link-external"){ ?>
+              <div class="form-group">
+                <label for="exampleInputEmail1"><?php echo $columns['display'];?></label>
+                <?php $instructions="instructions.php?type=".$doctype."&fieldID=".$columns['id'];?>
+                <a href="<?php echo $instructions;?>.php" onclick="window.open('<?php echo $instructions;?>','newwindow','width=500,height=500');return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
+                <?php 
+                if($object_data[$columns['ColumnName']]=="0" || $object_data[$columns['ColumnName']]==""){
+                  $text='placeholder="Full link here..."'; ?>
+                    <input type="text" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>"  <?php echo $text;?> <?php if($columns['status']==0){echo "Disabled";}?>>
+                <?php
+                } else { 
+                  $text='value="'.$object_data[$columns['ColumnName']].'"';?>
+                  <div class="row">
+                    <div class="col-md-9">
+                      <input type="text" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>"  <?php echo $text;?> <?php if($columns['status']==0){echo "Disabled";}?>>
+                    </div>
+                    <div class="col-md-3 text-right mt-1 mt-md-0">
+                      <a href="<?php echo $object_data[$columns['ColumnName']]; ?>" class="btn view-source" target="blank">View Source</a>
+                    </div>
+                  </div>
+                <?php 
+                } ?>
+              </div>
+            <?php
+            }
+
             // For dates
             if($columns['FieldType']=="date"){
              ?>
@@ -311,6 +338,7 @@ for(let i=0;i<field_name.length;i++){
                 $username = $project_db['username'];
                 $password = $project_db['password'];
                 $database = $project_db['database_name'];
+                $project_conn_link = $project_db['url'];
               
                 try{
                   $conn_project_ext = new PDO("mysql:host=$server;dbname=$database;", $username, $password);
@@ -318,19 +346,20 @@ for(let i=0;i<field_name.length;i++){
                   die( "Connection failed: " . $e->getMessage());
                 }
               
-                $q_project_list="SELECT `UI` as `ID`,`Name` FROM `person` WHERE `online`='1'";
+                $q_project_list="SELECT `personID`,`UI` as `ID`,`Name` FROM `person` WHERE `online`='1'";
                 $project_person_list = $conn_project_ext->query($q_project_list);
               ?>
 
-              <select onchange="slection_made()" class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
+              <select onchange="slection_made()" class="form-control project-connect" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
                 <?php while($selected_word = $project_person_list->fetch(PDO::FETCH_ASSOC)){
                   $disable_flag = "";
+                  $url_conn = $project_conn_link.$selected_word['personID'];
                   foreach($selectedoptions_Array as $opt_selected){
                     if($opt_selected==$selected_word['ID']){
                       $disable_flag="selected";
                     }
                   }
-                  echo '<option value="'.$selected_word['ID'].'" '.$disable_flag.'>'.$selected_word['ID'].' - '.$selected_word['Name'].'</option>';
+                  echo '<option value="'.$selected_word['ID'].'" '.$disable_flag.' title="'.$url_conn.'">'.$selected_word['ID'].' - '.$selected_word['Name'].'</option>';
 
                 } ?>
               </select>

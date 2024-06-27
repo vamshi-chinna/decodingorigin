@@ -52,6 +52,33 @@
             <?php
                 }
 
+            //For Text boxes
+            if($columns['FieldType']=="link-external"){ ?>
+              <div class="form-group">
+                <label for="exampleInputEmail1"><?php echo $columns['display'];?></label>
+                <?php $instructions="instructions.php?type=".$doctype."&fieldID=".$columns['id'];?>
+                <a href="<?php echo $instructions;?>.php" onclick="window.open('<?php echo $instructions;?>','newwindow','width=500,height=500');return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
+                <?php 
+                if($person_data[$columns['ColumnName']]=="0" || $person_data[$columns['ColumnName']]==""){
+                  $text='placeholder="Full link here..."'; ?>
+                    <input type="text" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>"  <?php echo $text;?> <?php if($columns['status']==0){echo "Disabled";}?>>
+                <?php
+                } else { 
+                  $text='value="'.$person_data[$columns['ColumnName']].'"';?>
+                  <div class="row">
+                    <div class="col-md-9">
+                      <input type="text" class="form-control" id="<?php echo $columns['ColumnName'];?>" name="<?php echo $columns['ColumnName'];?>"  <?php echo $text;?> <?php if($columns['status']==0){echo "Disabled";}?>>
+                    </div>
+                    <div class="col-md-3 text-right mt-1 mt-md-0">
+                      <a href="<?php echo $person_data[$columns['ColumnName']]; ?>" class="btn view-source" target="blank">View Source</a>
+                    </div>
+                  </div>
+                <?php 
+                } ?>
+              </div>
+            <?php
+            }
+
                 //For Text boxes
                 if($columns['FieldType']=="text-dependent"){
                 ?>

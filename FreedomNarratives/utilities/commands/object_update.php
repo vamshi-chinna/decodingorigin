@@ -28,6 +28,7 @@ foreach ($_POST as $name => $val)
       if($CV_identifer['FieldType']=="dropdown-CV-multi" & $CV_identifer['ColumnName']==$name)
       {
         $CV_table_name=$CV_identifer['Options'];
+        $multi_flag=1;
       }
       if($CV_identifer['FieldType']=="dropdown" & $CV_identifer['Options']=="Researcher")
       {
@@ -50,7 +51,7 @@ foreach ($_POST as $name => $val)
             $column_opt=$column_opt.$CV_value.";";
             $column_opt_id=$column_opt_id.$option.";";
           }
-          if(isset($event_data[$name]) && $event_data[$name]!=$column_opt_id){
+          if(isset($object_data[$name]) && $object_data[$name]!=$column_opt_id){
             $field_log=$field_log.htmlspecialchars($Display_name['display'] . ' : ' . $column_opt, ENT_QUOTES) . " <br> ";
           }
         } else {
@@ -83,7 +84,7 @@ foreach ($_POST as $name => $val)
             $column_opt=$column_opt.$option.";";
             $column_opt_id=$column_opt_id.$option.";";
           }
-          if(isset($event_data[$name]) && $event_data[$name]!=$column_opt_id){
+          if(isset($object_data[$name]) && $object_data[$name]!=$column_opt_id){
             $field_log=$field_log.htmlspecialchars($Display_name['display'] . ' : ' . $column_opt, ENT_QUOTES) . " <br> ";
           }
         } else {
@@ -112,7 +113,7 @@ if($field!=""){
           $column = htmlspecialchars($val, ENT_QUOTES);
         }
 
-        $q1_fieldtype="SELECT `FieldType`,`Options` FROM `".$object_data['doctype']."` WHERE `ColumnName`LIKE '".$name."'";
+        $q1_fieldtype="SELECT `FieldType`,`Options` FROM `".$object_data['doctype']."` WHERE `ColumnName` LIKE '".$name."'";
 
         $query_fieldtype = $conn->query($q1_fieldtype);
         $fieldtype_data = $query_fieldtype->fetch(PDO::FETCH_ASSOC);

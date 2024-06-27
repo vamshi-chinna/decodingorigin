@@ -325,12 +325,37 @@ require 'utilities/commands/object_update.php';
   <script>
   $(document).ready(function(){
 
+    function formatProjectConnector(pconn){
+      if(!pconn.id || pconn.id == null){
+        return pconn.text;
+      }
+      var recordurl = pconn.title;
+      var $option = $('<span class="opt"></span>');
+      var $option_text = $('<span class="pull_left"></span>');
+      var $option_link = $('<span class="pull_right"></span>');
+      var $preview = $('<a target="_blank" class="btn proj-connect-link">View Record</a>');
+      $preview.prop("href",recordurl);
+      $preview.on('mouseup',function(evt){
+        // Select2 will remove the dropdown on `mouseup`, which will prevent any `click` events from being triggered
+        // So we need to block the propagation of the `mouseup` event
+        evt.stopPropagation();
+      }); 
+
+      $option_text.text(pconn.text);
+      $option_link.append($preview);
+
+      $option.append($option_text);
+      $option.append($option_link);
+
+      return $option;
+    }
+
     // Initialize select2
     $(".searchdropdown").select2();
 
-    $('.multiselect2').select2({
-      placeholder: "Choose one or more options"
-    })
+    $(".project-connect").select2({
+      templateResult: formatProjectConnector
+    });
 
   });
 
