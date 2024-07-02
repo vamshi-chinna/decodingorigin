@@ -135,7 +135,7 @@ if($field!=""){
         $column = htmlspecialchars($val, ENT_QUOTES);
       }
     
-      $q1_fieldtype="SELECT `FieldType` FROM `".$event_data['doctype']."` WHERE `ColumnName`LIKE '".$name."'";
+      $q1_fieldtype="SELECT `FieldType`,`Options` FROM `".$event_data['doctype']."` WHERE `ColumnName`LIKE '".$name."'";
       $query_fieldtype = $conn->query($q1_fieldtype);
       $fieldtype_data = $query_fieldtype->fetch(PDO::FETCH_ASSOC);
       if($fieldtype_data){
