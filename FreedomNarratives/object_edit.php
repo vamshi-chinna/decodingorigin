@@ -320,13 +320,13 @@ require 'utilities/commands/object_update.php';
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
 
-  <script src="select2/dist/js/select2.min.js"></script>
+    <script src="select2/dist/js/select2.min.js"></script>
 
   <script>
   $(document).ready(function(){
 
     function formatProjectConnector(pconn){
-      if(!pconn.id || pconn.id == null){
+      if(!pconn.id || pconn.id == null || pconn.title==""){
         return pconn.text;
       }
       var recordurl = pconn.title;
@@ -355,6 +355,25 @@ require 'utilities/commands/object_update.php';
 
     $(".project-connect").select2({
       templateResult: formatProjectConnector
+    });
+
+    /* Handle resetting to zero when selections are cleared */
+    $(".searchdropdown").change(function(){
+      var selections = $(this).val().length;
+
+      if(selections==0){
+        $(this).val("0"); // Update the value
+        $(this).trigger('change'); // Notify other JS on change
+      }
+    });
+    
+    $(".project-connect").change(function(){
+      var selections = $(this).val().length;
+
+      if(selections==0){
+        $(this).val("0"); // Update the value
+        $(this).trigger('change'); // Notify other JS on change
+      }
     });
 
   });

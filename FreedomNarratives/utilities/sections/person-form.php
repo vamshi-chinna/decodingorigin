@@ -377,7 +377,7 @@
 
                 ?>
 
-                <select onchange="slection_made()" class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>" <?php if($columns['status']==0){echo "Disabled";}?>>
+                <select  class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>" <?php if($columns['status']==0){echo "Disabled";}?>>
 
                  <?php while($selected_word = $query_CL->fetch(PDO::FETCH_ASSOC)){
 
@@ -428,7 +428,13 @@
                     $project_person_list = $conn_project_ext->query($q_project_list);
                   ?>
 
-                  <select onchange="slection_made()" class="form-control project-connect" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
+                  <select class="form-control project-connect" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
+                    <?php if(in_array("0",$selectedoptions_Array)){
+                      $noentry_flag = "selected";
+                    } else {
+                      $noentry_flag = "";
+                    }?>
+                    <option value="0" <?php echo $noentry_flag;?>>No Connections</option>
                     <?php while($selected_word = $project_person_list->fetch(PDO::FETCH_ASSOC)){
                       $disable_flag = "";
                       $url_conn = $project_conn_link . $selected_word['personID'];
@@ -461,7 +467,7 @@
                 $selectedoptions_Array = explode(';', $selectedoptions);
               ?>
 
-              <select onchange="slection_made()" class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
+              <select  class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
                 <?php 
                   $notknown_flag = "";
                   foreach($selectedoptions_Array as $opt_selected){
@@ -506,7 +512,7 @@
               $query_CL = $conn->query($q1);
             ?>
 
-            <select onchange="slection_made()" class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
+            <select  class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
               <?php while($selected_word = $query_CL->fetch(PDO::FETCH_ASSOC)){
                 $disable_flag = "";
                 foreach($selectedoptions_Array as $opt_selected){

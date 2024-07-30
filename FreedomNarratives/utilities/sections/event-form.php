@@ -423,7 +423,13 @@
                 $project_person_list = $conn_project_ext->query($q_project_list);
               ?>
 
-              <select onchange="slection_made()" class="form-control project-connect" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
+              <select class="form-control project-connect" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
+                <?php if(in_array("0",$selectedoptions_Array)){
+                  $noentry_flag = "selected";
+                } else {
+                  $noentry_flag = "";
+                }?>
+                <option value="0" <?php echo $noentry_flag;?>>No Connections</option>
                 <?php while($selected_word = $project_person_list->fetch(PDO::FETCH_ASSOC)){
                   $disable_flag = "";
                   foreach($selectedoptions_Array as $opt_selected){
@@ -456,7 +462,7 @@
                 $selectedoptions_Array = explode(';', $selectedoptions);
               ?>
 
-              <select onchange="slection_made()" class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
+              <select class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
                 <?php 
                   $notknown_flag = "";
                   foreach($selectedoptions_Array as $opt_selected){
@@ -481,65 +487,101 @@
           require 'utilities/database_SS.php';
           }
 
+        // For Dropdown Menu - Load ALL Attached Sources
+        if($columns['FieldType']=="dropdown-Objects"){ ?>
+          <div class="form-group">
+            <label for="exampleInputEmail1"><?php echo $columns['display'];?></label>
+            <?php $instructions="instructions.php?type=".$doctype."&fieldID=".$columns['id'];?>
+            <a href="<?php echo $instructions;?>.php" onclick="window.open('<?php echo $instructions;?>','newwindow','width=500,height=500');return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
+            <?php
+              $q_s="SELECT * FROM `objects_person` WHERE `personID` LIKE '".$personID."'";
+              $query_s = $conn->query($q_s);
+            ?>
 
-                           // For Dropdown Menu - Load ALL Attached Sources
-                             if($columns['FieldType']=="dropdown-Objects"){
-                            ?>
-                           <div class="form-group">
-                           <label for="exampleInputEmail1"><?php echo $columns['display'];?></label>
-                           <?php
+            <select class="form-control" name="<?php echo $columns['ColumnName'];?>" <?php if($columns['status']==0){echo "Disabled";}?>>
 
-                           $instructions="instructions.php?type=".$doctype."&fieldID=".$columns['id'];?>
-                           <a href="<?php echo $instructions;?>.php" onclick="window.open('<?php echo $instructions;?>',
-                                                    'newwindow',
-                                              'width=500,height=500');
-                                        return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
-                           <?php
+              <option value="0">No Attachments</option>
+              <?php while($query_objects_attached = $query_s->fetch(PDO::FETCH_ASSOC)){
 
-                           $q_s="SELECT * FROM `objects_person` WHERE `personID` LIKE '".$personID."'";
-                           $query_s = $conn->query($q_s);
+                $q3="SELECT * FROM `object` WHERE `objectID` LIKE '".$query_objects_attached['objectID']."'";
+                $query3 = $conn->query($q3);
+                $query_object_data = $query3->fetch(PDO::FETCH_ASSOC);
 
+                $q2="SELECT * FROM `event` WHERE `eventID` LIKE '".$eventID."'";
+                $query2 = $conn->query($q2);
+                $query_data = $query2->fetch(PDO::FETCH_ASSOC);
 
+                if($query_object_data['Field1']=="0"){
+                  $query_data_title="ObjectID: ".$query_object_data['objectID'];
+                } else {
+                  $query_data_title=$query_object_data['Field1'];
+                }
 
-                           ?>
+                if($query_objects_attached['objectID']==$query_data['Sources']){
+                  echo "<option value=\"\" selected disabled hidden>".$query_data_title."</option>";
+                  echo "<option value=\"".$query_object_data['objectID']."\">".$query_object_data['objectID']." - ".$query_data_title."</option>";
+                } else {
+                  echo "<option value=\"".$query_object_data['objectID']."\">".$query_object_data['objectID']." - ".$query_data_title."</option>";
+                }
+              }?>
 
-                            <select class="form-control" name="<?php echo $columns['ColumnName'];?>" <?php if($columns['status']==0){echo "Disabled";}?>>
+            </select>
+          </div>
 
-                              <option value="0">No Attachments</option>
-                              <?php while($query_objects_attached = $query_s->fetch(PDO::FETCH_ASSOC)){
+        <?php
+        require 'utilities/database_SS.php';
+        }
 
-                                $q3="SELECT * FROM `object` WHERE `objectID` LIKE '".$query_objects_attached['objectID']."'";
-                                echo $q3;
-                                $query3 = $conn->query($q3);
-                                $query_object_data = $query3->fetch(PDO::FETCH_ASSOC);
+        // For Dropdown Menu - Load ALL Attached Sources
+        if($columns['FieldType']=="dropdown-Objects-multi"){ ?>
+          <div class="form-group">
+            <label for="exampleInputEmail1"><?php echo $columns['display'];?></label>
+            <?php $instructions="instructions.php?type=".$doctype."&fieldID=".$columns['id'];?>
+            <a href="<?php echo $instructions;?>.php" onclick="window.open('<?php echo $instructions;?>','newwindow','width=500,height=500');return false;" target="_blank"><i class="fas fa-info-circle"></i></a>
+            <?php
+              //Loading selected event data
+              $q2="SELECT * FROM `event` WHERE `eventID` LIKE '".$eventID."'";
+              $query2 = $conn->query($q2);
+              $query_data = $query2->fetch(PDO::FETCH_ASSOC);
 
-                                $q2="SELECT * FROM `event` WHERE `eventID` LIKE '".$eventID."'";
-                                echo $q2;
-                                $query2 = $conn->query($q2);
-                                $query_data = $query2->fetch(PDO::FETCH_ASSOC);
+              //Multi-select break up the sources
+              $selectedoptions=$query_data['Sources'];
+              $selectedoptions_Array = explode(';', $selectedoptions);
 
-                                if($query_object_data['Field1']=="0")
-                                {
-                                  $query_data_title="ObjectID: ".$query_object_data['objectID'];
-                                }else{
-                                  $query_data_title=$query_object_data['Field1'];
-                                }
+              $q_s="SELECT * FROM `objects_person` WHERE `personID` LIKE '".$personID."'";
+              $query_s = $conn->query($q_s);
+            ?>
+            <select class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
+              <?php if(in_array("0",$selectedoptions_Array)){
+                  $noentry_flag = "selected";
+                } else {
+                  $noentry_flag = "";
+                }?>
+              <option value="0" <?php echo $noentry_flag;?>>No Attachments</option>
+              <?php while($query_objects_attached = $query_s->fetch(PDO::FETCH_ASSOC)){
 
+                $q3="SELECT * FROM `object` WHERE `objectID` LIKE '".$query_objects_attached['objectID']."'";
+                $query3 = $conn->query($q3);
+                $query_object_data = $query3->fetch(PDO::FETCH_ASSOC);
 
-                                  if($query_objects_attached['objectID']==$query_data['Sources']){
-                                  echo "<option value=\"\" selected disabled hidden>".$query_data_title."</option>";
-                                  echo "<option value=\"".$query_object_data['objectID']."\">".$query_object_data['objectID']." - ".$query_data_title."</option>";
+                if($query_object_data['Field1']=="0"){
+                  $query_data_title="ObjectID: ".$query_object_data['objectID'];
+                } else {
+                  $query_data_title=$query_object_data['Field1'];
+                }
 
-                                }
-                                else {
-                                  echo "<option value=\"".$query_object_data['objectID']."\">".$query_object_data['objectID']." - ".$query_data_title."</option>";
-                                }
+                $disable_flag = "";
+                foreach($selectedoptions_Array as $opt_selected){
+                  if($opt_selected==$query_objects_attached['objectID']){
+                    $disable_flag="selected";
+                  }
+                }
+                echo '<option value="'.$query_object_data['objectID'].'" '.$disable_flag.'>'.$query_object_data['objectID'].' - '.$query_data_title.'</option>';
+              }?>
 
-                              }?>
+            </select>
+          </div>
 
-                            </select>
-
-                         </div>
         <?php
         require 'utilities/database_SS.php';
         }
@@ -564,7 +606,7 @@
               $query_CL = $conn->query($q1);
             ?>
 
-            <select onchange="slection_made()" class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
+            <select class="form-control searchdropdown" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
               <?php while($selected_word = $query_CL->fetch(PDO::FETCH_ASSOC)){
                 $disable_flag = "";
                 foreach($selectedoptions_Array as $opt_selected){

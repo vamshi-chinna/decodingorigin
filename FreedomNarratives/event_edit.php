@@ -292,7 +292,7 @@ require 'utilities/commands/event_update.php';
   $(document).ready(function(){
 
     function formatProjectConnector(pconn){
-      if(!pconn.id || pconn.id == null){
+      if(!pconn.id || pconn.id == null || pconn.title==""){
         return pconn.text;
       }
       var recordurl = pconn.title;
@@ -321,6 +321,25 @@ require 'utilities/commands/event_update.php';
 
     $(".project-connect").select2({
       templateResult: formatProjectConnector
+    });
+
+    /* Handle resetting to zero when selections are cleared */
+    $(".searchdropdown").change(function(){
+      var selections = $(this).val().length;
+
+      if(selections==0){
+        $(this).val("0"); // Update the value
+        $(this).trigger('change'); // Notify other JS on change
+      }
+    });
+    
+    $(".project-connect").change(function(){
+      var selections = $(this).val().length;
+
+      if(selections==0){
+        $(this).val("0"); // Update the value
+        $(this).trigger('change'); // Notify other JS on change
+      }
     });
 
   });
