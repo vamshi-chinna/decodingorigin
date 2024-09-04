@@ -17,8 +17,8 @@ $TimeDate = $date->format('Y-m-d H:i:s');
 
 
     $error=0;
-    $field="Object Removed with ID: ".$objectID."<br><br>";
-    $field_log="Object Removed with ID: ".$objectID."<br><br>";
+    $field="Object Removed with ID: ".$objectID." and personID:".$personID."<br><br>";
+    $field_log="Object Removed with ID: ".$objectID."and personID:".$personID."<br><br>";
     $q="SELECT * FROM `object` WHERE `objectID` LIKE '".$objectID."'";
     $query1 = $conn->query($q);
     $list = $query1->fetch(PDO::FETCH_ASSOC);
@@ -28,7 +28,7 @@ $TimeDate = $date->format('Y-m-d H:i:s');
 
 
 
-      $q1_connection="DELETE FROM `objects_person` WHERE `objectID` LIKE '".$objectID."'";
+      $q1_connection="DELETE FROM `objects_person` WHERE `objectID` LIKE '".$objectID."' AND `personID` LIKE '".$personID."'";
       $query_connection = $conn->prepare($q1_connection);
       //Building Connection between person and Event
       if( $query_connection->execute() ){
