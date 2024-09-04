@@ -419,7 +419,8 @@
                   die( "Connection failed: " . $e->getMessage());
                 }
               
-                $q_project_list="SELECT `personID`,`UI` as `ID`,`Name` FROM `person` WHERE `online`='1'";
+                //$q_project_list="SELECT `personID`,`UI` as `ID`,`Name` FROM `person` WHERE `online`='1'";
+                $q_project_list="SELECT `personID`,`UI` as `ID`,`Name` FROM `person` ";
                 $project_person_list = $conn_project_ext->query($q_project_list);
               ?>
 
