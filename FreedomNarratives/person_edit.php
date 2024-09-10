@@ -403,6 +403,7 @@ require 'utilities/commands/person_update.php';
 
     $(".project-connect").select2({
       placeholder: "Enter an ID or Name",
+      minimumInputLength: 2,
       ajax: {
         url: 'utilities/commands_external/project_connect_lazy_load.php',
         method: 'GET',
