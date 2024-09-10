@@ -420,7 +420,7 @@
                 }
               
                 //$q_project_list="SELECT `personID`,`UI` as `ID`,`Name` FROM `person` WHERE `online`='1'";
-                $q_project_list="SELECT `personID`,`UI` as `ID`,`Name` FROM `person` ";
+                $q_project_list="SELECT `personID`,`UI` as `ID`,`Name` FROM `person` WHERE `UI` IN ('".implode("','",$selectedoptions_Array)."') ";
                 $project_person_list = $conn_project_ext->query($q_project_list);
               ?>
 
