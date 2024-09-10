@@ -353,10 +353,6 @@ require 'utilities/commands/object_update.php';
     // Initialize select2
     $(".searchdropdown").select2();
 
-    $(".project-connect").select2({
-      templateResult: formatProjectConnector
-    });
-
     /* Handle resetting to zero when selections are cleared */
     $(".searchdropdown").change(function(){
       var selections = $(this).val().length;
@@ -374,6 +370,24 @@ require 'utilities/commands/object_update.php';
         $(this).val("0"); // Update the value
         $(this).trigger('change'); // Notify other JS on change
       }
+    });
+
+    $(".project-connect").select2({
+      placeholder: "Enter an ID or Name",
+      ajax: {
+        url: 'utilities/commands_external/project_connect_lazy_load.php',
+        method: 'GET',
+        dataType: 'json',
+        delay: 250,
+        data: function(params){
+          var query = {
+            search: params.term,
+            db: $(this).attr("id")
+          }
+          return query;
+        }
+      },
+      templateResult: formatProjectConnector
     });
 
   });

@@ -351,7 +351,7 @@ for(let i=0;i<field_name.length;i++){
                 $project_person_list = $conn_project_ext->query($q_project_list);
               ?>
 
-              <select class="form-control project-connect" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
+              <select id="<?php echo $columns['Options'];?>" class="form-control project-connect" style="width:100%" name="<?php echo $columns['ColumnName'];?>[]" <?php if($columns['status']==0){echo "Disabled";}?> multiple>
                 <?php if(in_array("0",$selectedoptions_Array)){
                   $noentry_flag = "selected";
                 } else {
