@@ -3,35 +3,35 @@ session_start();
 date_default_timezone_set('America/Toronto');
 $date = new DateTime();
 $TimeDate = $date->format('Y-m-d H:i:s');
- require '../database_login.php';
+require '../database_login.php';
 
-    $fname=$_POST['fname'];
-    $lname=$_POST['lname'];
-    $email=$_POST['email'];
-    $password=bin2hex(openssl_random_pseudo_bytes(4));
-    $Organization=$_POST['Organization'];
-    $security=$_POST['security'];
-    $chat=1;
-    $FN="1";
+$fname = $_POST['fname'];
+$lname = $_POST['lname'];
+$email = $_POST['email'];
+$password = bin2hex(openssl_random_pseudo_bytes(4));
+$Organization = $_POST['Organization'];
+$security = $_POST['security'];
+$chat = 1;
+$FN = "1";
 
 
-    $url=explode("?message", $_SERVER['HTTP_REFERER'])[0];
-    $url_error=$url."?message=1";
-    $url_success=$url."?message=2";
-    $pass_protected=$password;
-    //$pass_protected=password_hash($password, PASSWORD_DEFAULT); For hasing db passwords
+$url = explode("?message", $_SERVER['HTTP_REFERER'])[0];
+$url_error = $url . "?message=1";
+$url_success = $url . "?message=2";
+$pass_protected = $password;
+//$pass_protected=password_hash($password, PASSWORD_DEFAULT); For hasing db passwords
 
-    $sql = "INSERT INTO `users` (`fname`,`lname`,`email`,`password`,`Organization`,`security`,`chat`,`FN`) VALUES ('".$fname."','".$lname."','".$email."','".$pass_protected."','".$Organization."',".$security.",".$chat.",'".$FN."')";
-    $stmt = $conn_login->prepare($sql);
-    //Creating New Event
-    if( $stmt->execute() ){
-      $emailto = $email;
-      $replyto= 'support@regid.ca';
-      $toname = 'New User RegID';
-      $emailfrom = 'do-no-reply@regeneratedidentities.org';
-      $fromname = 'Regenerated Identities - System Email';
-      $subject = '[Regenerated Identities] New User Account';
-      $messagebody = '
+$sql = "INSERT INTO `users` (`fname`,`lname`,`email`,`password`,`Organization`,`security`,`chat`,`FN`) VALUES ('" . $fname . "','" . $lname . "','" . $email . "','" . $pass_protected . "','" . $Organization . "'," . $security . "," . $chat . ",'" . $FN . "')";
+$stmt = $conn_login->prepare($sql);
+//Creating New Event
+if ($stmt->execute()) {
+  $emailto = $email;
+  $replyto = 'support@regid.ca';
+  $toname = 'New User RegID';
+  $emailfrom = 'do-no-reply@regeneratedidentities.org';
+  $fromname = 'Regenerated Identities - System Email';
+  $subject = '[Regenerated Identities] New User Account';
+  $messagebody = '
       <center style="width: 100%; background-color: white; font: black;">
           <div class="email-container" style="max-width: 600px; margin: 0 auto;">
               <img style="width: 250px; max-width: 600px; height: auto; margin: auto; display: block;" src="http://regeneratedidentities.org/images/regid_logo.png">
@@ -41,7 +41,7 @@ $TimeDate = $date->format('Y-m-d H:i:s');
                       <div style="text-align: center;" class="bg_white" valign="top">
                         <h1>A new account was created for you!</h1>
                           <p style=""><br></p><div style="text-align: left;"><span style="font-size: 14px;">
-                          Dear '.$fname.',<br>
+                          Dear ' . $fname . ',<br>
                           <br>
                           A new  account was requested for you on Regenerated Identities.<br>
 
@@ -49,8 +49,8 @@ $TimeDate = $date->format('Y-m-d H:i:s');
                           <div style="padding:1.5rem !important; background-color:#8AF1EB !important">
                           You may now access the RegID Platform :<br>
                           URL: https://decodingoriginswebportal.org<br>
-                          Your Username :  <b>'.$email.'</b><br>
-                          Your Password**: <b>'.$password.'</b><br>
+                          Your Username :  <b>' . $email . '</b><br>
+                          Your Password**: <b>' . $password . '</b><br>
                           Project Name: <b>Decoding Origins Web Portal - Freedom Narratives</b><br>
                           Project Code: <b>DO/FN</b><br>
 
@@ -91,25 +91,24 @@ $TimeDate = $date->format('Y-m-d H:i:s');
        </center>
 
 ';
-      $headers =
-        'Return-Path: ' . $emailfrom . "\r\n" .
-        'From: ' . $fromname . ' <' . $emailfrom . '>' . "\r\n" .
-        'X-Priority: 1' . "\r\n" .
-        'X-Mailer: PHP ' . phpversion() .  "\r\n" .
-        'Reply-To: RegID Support <' . $replyto . '>' . "\r\n" .
-        'MIME-Version: 1.0' . "\r\n" .
-        'Content-Transfer-Encoding: 8bit' . "\r\n" .
-        'Content-Type: text/html; charset=UTF-8' . "\r\n";
-      $params = '-f ' . $emailfrom;
-      $test = mail($emailto, $subject, $messagebody, $headers, $params);
-      // $test should be TRUE if the mail function is called correctly
+  $headers =
+    'Return-Path: ' . $emailfrom . "\r\n" .
+    'From: ' . $fromname . ' <' . $emailfrom . '>' . "\r\n" .
+    'X-Priority: 1' . "\r\n" .
+    'X-Mailer: PHP ' . phpversion() . "\r\n" .
+    'Reply-To: RegID Support <' . $replyto . '>' . "\r\n" .
+    'MIME-Version: 1.0' . "\r\n" .
+    'Content-Transfer-Encoding: 8bit' . "\r\n" .
+    'Content-Type: text/html; charset=UTF-8' . "\r\n";
+  $params = '-f ' . $emailfrom;
+  $test = mail($emailto, $subject, $messagebody, $headers, $params);
+  // $test should be TRUE if the mail function is called correctly
 
 
-        header( 'location: '.$url_success);
-      }
-      else{
-    header( 'location: '.$url_error);
-      }
+  header('location: ' . $url_success);
+} else {
+  header('location: ' . $url_error);
+}
 
 
 
